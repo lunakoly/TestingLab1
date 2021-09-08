@@ -65,7 +65,7 @@ fun main() {
  * Пользователь задает время в часах, минутах и секундах, например, 8:20:35.
  * Рассчитать время в секундах, прошедшее с начала суток (30035 в данном случае).
  */
-fun seconds(hours: Int, minutes: Int, seconds: Int): Int = TODO()
+fun seconds(hours: Int, minutes: Int, seconds: Int): Int = hours*3600+minutes*60+seconds
 
 /**
  * Тривиальная (1 балл)
@@ -98,7 +98,7 @@ fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double = TODO()
  * Пользователь задает целое число, большее 100 (например, 3801).
  * Определить третью цифру справа в этом числе (в данном случае 8).
  */
-fun thirdDigit(number: Int): Int = TODO()
+fun thirdDigit(number: Int): Int = (number/100)%10
 
 /**
  * Простая (2 балла)
@@ -125,3 +125,8 @@ fun accountInThreeYears(initial: Int, percent: Int): Double = TODO()
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
 fun numberRevert(number: Int): Int = TODO()
+
+fun main(args: Array<String>) {
+    val result = thirdDigit(1000244)
+    println("Result: $result")
+}
