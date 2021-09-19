@@ -194,9 +194,9 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var row = ""
     var k = 0
-    var root: Int
+    var add = 1
+    var root = 0
     var digits = 0
     var dig: Int
     var result: Int
@@ -209,11 +209,15 @@ fun squareSequenceDigit(n: Int): Int {
             dig += 1
             result /= 10
         }
-        row += root
         digits += dig
     }
-    row[n - 1].digitToInt().also { result = it }
-    return result
+    result = root
+    if (digits - n == 0) return result % 10
+    else {
+        for (i in 1..digits - n) add *= 10
+        if (result / add == 10) return 0
+        else return result / add
+    }
 }
 
 /**
@@ -226,13 +230,13 @@ fun squareSequenceDigit(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
-    var fib = ""
     var a1 = 0
     var a2 = 0
     var k: Int
     var dig: Int
     var digits = 0
     var result: Int
+    var add = 1
     while (digits < n) {
         k = a2
         a2 += a1
@@ -244,10 +248,14 @@ fun fibSequenceDigit(n: Int): Int {
             result /= 10
             dig += 1
         }
-        fib += a2
         digits += dig
     }
-    fib[n - 1].digitToInt().also { result = it }
-    return result
+    result = a2
+    if (digits - n == 0) return result % 10
+    else {
+        for (i in 1..digits - n) add *= 10
+        if (result / add == 10) return 0
+        else return result / add
+    }
 }
 
