@@ -241,7 +241,74 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    var result = ""
+    var number = n
+    if (number >= 1000) {
+        while (number >= 1000) {
+            number -= 1000
+            result += "M"
+        }
+        number = n % 1000
+    }
+    if (number >= 900) {
+        result += "CM"
+        number -= 900
+    }
+    if (number in 500..899) {
+        result += "D"
+        number -= 500
+    }
+    if (number >= 400) {
+        result += "CD"
+        number -= 400
+    }
+    if (number >= 100) {
+        while (number >= 100) {
+            number -= 100
+            result += "C"
+        }
+        number = n % 100
+    }
+    if (number >= 90) {
+        result += "XC"
+        number -= 90
+    }
+    if (number >= 50) {
+        result += "L"
+        number -= 50
+    }
+    if (number >= 40) {
+        result += "XL"
+        number -= 40
+    }
+    if (number >= 10) {
+        while (number >= 10) {
+            number -= 10
+            result += "X"
+        }
+        number = n % 10
+    }
+    if (number >= 9) {
+        result += "IX"
+        number -= 9
+    }
+    if (number >= 5) {
+        result += "V"
+        number -= 5
+    }
+    if (number >= 4) {
+        result += "IV"
+        number -= 4
+    }
+    if (number >= 1) {
+        while (number > 0) {
+            number -= 1
+            result += "I"
+        }
+    }
+    return result
+}
 
 /**
  * Очень сложная (7 баллов)
@@ -250,4 +317,112 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    var digit = 0
+    var result = ""
+    var number = n
+    var del : Int
+    var skip = false
+    while (number != 0) {
+        number /= 10
+        digit += 1
+    }
+    number = n
+    while (digit != 0) {
+        del = 1
+        for (i in 1 until digit) del *= 10
+        if (digit % 3 == 0) {
+            result += when (number / del) {
+                9 -> "девятьсот"
+                8 -> "восемьсот"
+                7 -> "семьсот"
+                6 -> "шестьсот"
+                5 -> "пятьсот"
+                4 -> "четыреста"
+                3 -> "триста"
+                2 -> "двести"
+                1 -> "сто"
+                else -> ""
+            }
+        }
+        if (digit % 3 == 2) {
+            result += when (number / del) {
+                9 -> "девяносто"
+                8 -> "восемьдесят"
+                7 -> "семьдесят"
+                6 -> "шестьдесят"
+                5 -> "пятьдесят"
+                4 -> "сорок"
+                3 -> "тридцать"
+                2 -> "двадцать"
+                else -> ""
+            }
+            if (number / del == 1) {
+                number %= del
+                digit -= 1
+                del /= 10
+                result += when (number / del) {
+                    9 -> "девятнадцать"
+                    8 -> "восемнадцать"
+                    7 -> "семнадцать"
+                    6 -> "шестнадцать"
+                    5 -> "пятнадцать"
+                    4 -> "четырнадцать"
+                    3 -> "тринадцать"
+                    2 -> "двенадцать"
+                    1 -> "одинадцать"
+                    else -> "десять"
+                }
+                if (digit == 4) {
+                    result += " тысяч"
+                }
+                number %= del
+                digit -= 1
+                del /= 10
+                skip = true
+            }
+        }
+        if (digit % 3 == 1) {
+            result += when (number / del) {
+                9 -> "девять"
+                8 -> "восемь"
+                7 -> "семь"
+                6 -> "шесть"
+                5 -> "пять"
+                4 -> "четыре"
+                3 -> "три"
+                else -> ""
+            }
+            if (number / del == 1) {
+                if (digit == 1) result += "один"
+                else result += "одна"
+            }
+            if (number / del == 2) {
+                if (digit == 1) result += "два"
+                else result += "две"
+            }
+            if (digit == 4) {
+                result += when (number / del) {
+                    9 -> " тысяч"
+                    8 -> " тысяч"
+                    7 -> " тысяч"
+                    6 -> " тысяч"
+                    5 -> " тысяч"
+                    4 -> " тысячи"
+                    3 -> " тысячи"
+                    2 -> " тысячи"
+                    1 -> " тысяча"
+                    else -> " тысяч"
+                }
+            }
+        }
+        if (skip == true) skip = false
+        else {
+            number %= del
+            digit -= 1
+            del /= 10
+        }
+        if ((digit != 0) && (number / del != 0)) result += " "
+    }
+    return result
+}
