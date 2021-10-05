@@ -242,70 +242,40 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    var result = ""
+    var result = buildString {}
     var number = n
-    if (number >= 1000) {
-        while (number >= 1000) {
-            number -= 1000
-            result += "M"
+    var n1 = 1000
+    var n9 = 900
+    var n5 = 500
+    var n4 = 400
+    var i = 0
+    val roman = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
+    while (number > 0) {
+        while (number >= n1) {
+            number -= n1
+            result += roman[i]
         }
-        number = n % 1000
-    }
-    if (number >= 900) {
-        result += "CM"
-        number -= 900
-    }
-    if (number in 500..899) {
-        result += "D"
-        number -= 500
-    }
-    if (number >= 400) {
-        result += "CD"
-        number -= 400
-    }
-    if (number >= 100) {
-        while (number >= 100) {
-            number -= 100
-            result += "C"
+        n1 /= 10
+        i += 1
+        if (number >= n9 && n9 != 0) {
+            result += roman[i]
+            number -= n9
         }
-        number = n % 100
-    }
-    if (number >= 90) {
-        result += "XC"
-        number -= 90
-    }
-    if (number >= 50) {
-        result += "L"
-        number -= 50
-    }
-    if (number >= 40) {
-        result += "XL"
-        number -= 40
-    }
-    if (number >= 10) {
-        while (number >= 10) {
-            number -= 10
-            result += "X"
+        n9 /= 10
+        i += 1
+        if (number >= n5 && n5 != 0) {
+            result += roman[i]
+            number -= n5
         }
-        number = n % 10
-    }
-    if (number >= 9) {
-        result += "IX"
-        number -= 9
-    }
-    if (number >= 5) {
-        result += "V"
-        number -= 5
-    }
-    if (number >= 4) {
-        result += "IV"
-        number -= 4
-    }
-    if (number >= 1) {
-        while (number > 0) {
-            number -= 1
-            result += "I"
+        n5 /= 10
+        i += 1
+        if (number >= n4 && n4 != 0) {
+            result += roman[i]
+            number -= n4
         }
+        n4 /= 10
+        i += 1
+        println(result)
     }
     return result
 }
@@ -318,111 +288,104 @@ fun roman(n: Int): String {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    var digit = 0
+    var digit: Int
+    var i = 0
     var result = ""
-    var number = n
-    var del : Int
+    val number = n.toString()
+    var num: Char
     var skip = false
-    while (number != 0) {
-        number /= 10
-        digit += 1
-    }
-    number = n
+    digit = number.length
+    println(number)
     while (digit != 0) {
-        del = 1
-        for (i in 1 until digit) del *= 10
+        num = number[i]
         if (digit % 3 == 0) {
-            result += when (number / del) {
-                9 -> "девятьсот"
-                8 -> "восемьсот"
-                7 -> "семьсот"
-                6 -> "шестьсот"
-                5 -> "пятьсот"
-                4 -> "четыреста"
-                3 -> "триста"
-                2 -> "двести"
-                1 -> "сто"
+            result += when (num) {
+                '9' -> "девятьсот"
+                '8' -> "восемьсот"
+                '7' -> "семьсот"
+                '6' -> "шестьсот"
+                '5' -> "пятьсот"
+                '4' -> "четыреста"
+                '3' -> "триста"
+                '2' -> "двести"
+                '1' -> "сто"
                 else -> ""
             }
         }
         if (digit % 3 == 2) {
-            result += when (number / del) {
-                9 -> "девяносто"
-                8 -> "восемьдесят"
-                7 -> "семьдесят"
-                6 -> "шестьдесят"
-                5 -> "пятьдесят"
-                4 -> "сорок"
-                3 -> "тридцать"
-                2 -> "двадцать"
+            result += when (num) {
+                '9' -> "девяносто"
+                '8' -> "восемьдесят"
+                '7' -> "семьдесят"
+                '6' -> "шестьдесят"
+                '5' -> "пятьдесят"
+                '4' -> "сорок"
+                '3' -> "тридцать"
+                '2' -> "двадцать"
                 else -> ""
             }
-            if (number / del == 1) {
-                number %= del
+            if (num == '1') {
                 digit -= 1
-                del /= 10
-                result += when (number / del) {
-                    9 -> "девятнадцать"
-                    8 -> "восемнадцать"
-                    7 -> "семнадцать"
-                    6 -> "шестнадцать"
-                    5 -> "пятнадцать"
-                    4 -> "четырнадцать"
-                    3 -> "тринадцать"
-                    2 -> "двенадцать"
-                    1 -> "одиннадцать"
+                i += 1
+                num = number[i]
+                result += when (num) {
+                    '9' -> "девятнадцать"
+                    '8' -> "восемнадцать"
+                    '7' -> "семнадцать"
+                    '6' -> "шестнадцать"
+                    '5' -> "пятнадцать"
+                    '4' -> "четырнадцать"
+                    '3' -> "тринадцать"
+                    '2' -> "двенадцать"
+                    '1' -> "одиннадцать"
                     else -> "десять"
                 }
                 if (digit == 4) {
                     result += " тысяч"
                 }
-                number %= del
                 digit -= 1
-                del /= 10
                 skip = true
             }
         }
         if (digit % 3 == 1) {
-            result += when (number / del) {
-                9 -> "девять"
-                8 -> "восемь"
-                7 -> "семь"
-                6 -> "шесть"
-                5 -> "пять"
-                4 -> "четыре"
-                3 -> "три"
+            result += when (num) {
+                '9' -> "девять"
+                '8' -> "восемь"
+                '7' -> "семь"
+                '6' -> "шесть"
+                '5' -> "пять"
+                '4' -> "четыре"
+                '3' -> "три"
                 else -> ""
             }
-            if (number / del == 1) {
-                if (digit == 1) result += "один"
-                else result += "одна"
+            if (num == '1') {
+                result += if (digit == 1) "один"
+                else "одна"
             }
-            if (number / del == 2) {
-                if (digit == 1) result += "два"
-                else result += "две"
+            if (num == '2') {
+                result += if (digit == 1) "два"
+                else "две"
             }
             if (digit == 4) {
-                result += when (number / del) {
-                    9 -> " тысяч"
-                    8 -> " тысяч"
-                    7 -> " тысяч"
-                    6 -> " тысяч"
-                    5 -> " тысяч"
-                    4 -> " тысячи"
-                    3 -> " тысячи"
-                    2 -> " тысячи"
-                    1 -> " тысяча"
+                result += when (num) {
+                    '9' -> " тысяч"
+                    '8' -> " тысяч"
+                    '7' -> " тысяч"
+                    '6' -> " тысяч"
+                    '5' -> " тысяч"
+                    '4' -> " тысячи"
+                    '3' -> " тысячи"
+                    '2' -> " тысячи"
+                    '1' -> " тысяча"
                     else -> " тысяч"
                 }
             }
         }
-        if (skip == true) skip = false
-        else {
-            number %= del
-            digit -= 1
-            del /= 10
-        }
-        if ((digit != 0) && (number / del != 0)) result += " "
+        if (skip) skip = false
+        else digit -= 1
+        if ((digit != 0) && (number[i + 1] != '0')) result += " "
+        i += 1
     }
+    println(result)
     return result
 }
