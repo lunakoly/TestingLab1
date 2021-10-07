@@ -244,39 +244,21 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
 fun roman(n: Int): String {
     var result = buildString {}
     var number = n
-    var n1 = 1000
-    var n9 = 900
-    var n5 = 500
-    var n4 = 400
+    val dig = mutableListOf(1000, 900, 500, 400)
+    var k = 0
     var i = 0
     val roman = listOf("M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I")
     while (number > 0) {
-        while (number >= n1) {
-            number -= n1
-            result += roman[i]
+        while (number >= dig[k]) {
+            number -= dig[k]
+            result = buildString { append(result + roman[i]) }
         }
-        n1 /= 10
+        dig[k] /= 10
         i += 1
-        if (number >= n9 && n9 != 0) {
-            result += roman[i]
-            number -= n9
-        }
-        n9 /= 10
-        i += 1
-        if (number >= n5 && n5 != 0) {
-            result += roman[i]
-            number -= n5
-        }
-        n5 /= 10
-        i += 1
-        if (number >= n4 && n4 != 0) {
-            result += roman[i]
-            number -= n4
-        }
-        n4 /= 10
-        i += 1
-        println(result)
+        if (k == 3) k = 0
+        else k += 1
     }
+    println(result)
     return result
 }
 
@@ -293,6 +275,24 @@ fun russian(n: Int): String {
     var result = ""
     val number = n.toString()
     var num: Char
+    val d3 =
+        listOf("девятьсот", "восемьсот", "семьсот", "шестьсот", "пятьсот", "четыреста", "триста", "двести", "сто")
+    val d2 =
+        listOf("девяносто", "восемьдесят", "семьдесят", "шестьдесят", "пятьдесят", "сорок", "тридцать", "двадцать")
+    val d1 = listOf("девять", "восемь", "семь", "шесть", "пять", "четыре", "три")
+    val d23 = listOf(
+        "девятнадцать",
+        "восемнадцать",
+        "семнадцать",
+        "шестнадцать",
+        "пятнадцать",
+        "четырнадцать",
+        "тринадцать",
+        "двенадцать",
+        "одиннадцать",
+        "десять"
+    )
+    val thousand = listOf(" тысяч", " тысячи", " тысяча")
     var skip = false
     digit = number.length
     println(number)
@@ -300,28 +300,28 @@ fun russian(n: Int): String {
         num = number[i]
         if (digit % 3 == 0) {
             result += when (num) {
-                '9' -> "девятьсот"
-                '8' -> "восемьсот"
-                '7' -> "семьсот"
-                '6' -> "шестьсот"
-                '5' -> "пятьсот"
-                '4' -> "четыреста"
-                '3' -> "триста"
-                '2' -> "двести"
-                '1' -> "сто"
+                '9' -> d3[0]
+                '8' -> d3[1]
+                '7' -> d3[2]
+                '6' -> d3[3]
+                '5' -> d3[4]
+                '4' -> d3[5]
+                '3' -> d3[6]
+                '2' -> d3[7]
+                '1' -> d3[8]
                 else -> ""
             }
         }
         if (digit % 3 == 2) {
             result += when (num) {
-                '9' -> "девяносто"
-                '8' -> "восемьдесят"
-                '7' -> "семьдесят"
-                '6' -> "шестьдесят"
-                '5' -> "пятьдесят"
-                '4' -> "сорок"
-                '3' -> "тридцать"
-                '2' -> "двадцать"
+                '9' -> d2[0]
+                '8' -> d2[1]
+                '7' -> d2[2]
+                '6' -> d2[3]
+                '5' -> d2[4]
+                '4' -> d2[5]
+                '3' -> d2[6]
+                '2' -> d2[7]
                 else -> ""
             }
             if (num == '1') {
@@ -329,15 +329,15 @@ fun russian(n: Int): String {
                 i += 1
                 num = number[i]
                 result += when (num) {
-                    '9' -> "девятнадцать"
-                    '8' -> "восемнадцать"
-                    '7' -> "семнадцать"
-                    '6' -> "шестнадцать"
-                    '5' -> "пятнадцать"
-                    '4' -> "четырнадцать"
-                    '3' -> "тринадцать"
-                    '2' -> "двенадцать"
-                    '1' -> "одиннадцать"
+                    '9' -> d23[0]
+                    '8' -> d23[1]
+                    '7' -> d23[2]
+                    '6' -> d23[3]
+                    '5' -> d23[4]
+                    '4' -> d23[5]
+                    '3' -> d23[6]
+                    '2' -> d23[7]
+                    '1' -> d23[8]
                     else -> "десять"
                 }
                 if (digit == 4) {
@@ -349,13 +349,13 @@ fun russian(n: Int): String {
         }
         if (digit % 3 == 1) {
             result += when (num) {
-                '9' -> "девять"
-                '8' -> "восемь"
-                '7' -> "семь"
-                '6' -> "шесть"
-                '5' -> "пять"
-                '4' -> "четыре"
-                '3' -> "три"
+                '9' -> d1[0]
+                '8' -> d1[1]
+                '7' -> d1[2]
+                '6' -> d1[3]
+                '5' -> d1[4]
+                '4' -> d1[5]
+                '3' -> d1[6]
                 else -> ""
             }
             if (num == '1') {
@@ -368,16 +368,16 @@ fun russian(n: Int): String {
             }
             if (digit == 4) {
                 result += when (num) {
-                    '9' -> " тысяч"
-                    '8' -> " тысяч"
-                    '7' -> " тысяч"
-                    '6' -> " тысяч"
-                    '5' -> " тысяч"
-                    '4' -> " тысячи"
-                    '3' -> " тысячи"
-                    '2' -> " тысячи"
-                    '1' -> " тысяча"
-                    else -> " тысяч"
+                    '9' -> thousand[0]
+                    '8' -> thousand[0]
+                    '7' -> thousand[0]
+                    '6' -> thousand[0]
+                    '5' -> thousand[0]
+                    '4' -> thousand[1]
+                    '3' -> thousand[1]
+                    '2' -> thousand[1]
+                    '1' -> thousand[2]
+                    else -> thousand[0]
                 }
             }
         }
