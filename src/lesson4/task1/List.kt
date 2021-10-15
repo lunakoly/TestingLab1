@@ -242,7 +242,7 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    var result = buildString {}
+    val result = StringBuilder()
     var number = n
     val dig = mutableListOf(1000, 900, 500, 400)
     var k = 0
@@ -251,15 +251,14 @@ fun roman(n: Int): String {
     while (number > 0) {
         while (number >= dig[k]) {
             number -= dig[k]
-            result = buildString { append(result + roman[i]) }
+            result.append(roman[i])
         }
         dig[k] /= 10
         i += 1
         if (k == 3) k = 0
         else k += 1
     }
-    println(result)
-    return result
+    return result.toString()
 }
 
 /**
@@ -270,11 +269,9 @@ fun roman(n: Int): String {
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String {
-    var digit: Int
     var i = 0
-    var result = ""
+    val result = StringBuilder()
     val number = n.toString()
-    var num: Int
     val d3 =
         listOf("", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
     val d2 =
@@ -293,42 +290,46 @@ fun russian(n: Int): String {
         "девятнадцать"
     )
     var skip = false
-    digit = number.length
+    var digit = number.length
     while (digit != 0) {
-        num = number[i].digitToInt()
-        if (digit % 3 == 0) result += d3[num]
+        var num = number[i].digitToInt()
+        if (digit % 3 == 0) result.append(d3[num])
         if (digit % 3 == 2) {
-            if (num >= 2) result += d2[num - 2]
+            if (num >= 2) result.append(d2[num - 2])
             if (num == 1) {
                 digit -= 1
                 i += 1
                 num = number[i].digitToInt()
-                result += d23[num]
-                if (digit == 4) result += " тысяч"
+                result.append(d23[num])
+                if (digit == 4) result.append(" тысяч")
                 digit -= 1
                 skip = true
             }
         }
         if (digit % 3 == 1) {
-            if (num >= 3) result += d1[num - 3]
+            if (num >= 3) result.append(d1[num - 3])
             if (num == 1) {
-                result += if (digit == 1) "один"
-                else "одна"
+                result.append(
+                    if (digit == 1) "один"
+                    else "одна"
+                )
             }
             if (num == 2) {
-                result += if (digit == 1) "два"
-                else "две"
+                result.append(
+                    if (digit == 1) "два"
+                    else "две"
+                )
             }
             if (digit == 4) {
-                if (num == 0 || num in 5..9) result += " тысяч"
-                if (num in 2..4) result += " тысячи"
-                if (num == 1) result += " тысяча"
+                if (num == 0 || num in 5..9) result.append(" тысяч")
+                if (num in 2..4) result.append(" тысячи")
+                if (num == 1) result.append(" тысяча")
             }
         }
         if (skip) skip = false
         else digit -= 1
-        if ((digit != 0) && (number[i + 1] != '0')) result += " "
+        if ((digit != 0) && (number[i + 1] != '0')) result.append(" ")
         i += 1
     }
-    return result
+    return result.toString()
 }
