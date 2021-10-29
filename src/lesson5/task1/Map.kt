@@ -277,7 +277,18 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    val nmap = mutableMapOf<Int, Int>()
+    for (i in list.indices) {
+        nmap[i] = list[i]
+    }
+    for (i in 0 until nmap.size - 1) {
+        for (k in i + 1 until nmap.size) {
+            if (nmap[i]?.plus(nmap[k]!!) == number) return Pair(i, k)
+        }
+    }
+    return Pair(-1, -1)
+}
 
 /**
  * Очень сложная (8 баллов)
@@ -300,4 +311,48 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    val results = mutableMapOf<Pair<Int, Int>, Int>()
+    val weight = MutableList(treasures.size) { 0 }
+    val value = MutableList(treasures.size) { 0 }
+    val t = MutableList<String>(treasures.size) { "" }
+    var lowWeight = capacity
+    val neededT = mutableSetOf<Int>()
+    var k = 1
+    for ((name, vw) in treasures) {
+        weight.add(k, vw.first)
+        value.add(k, vw.second)
+        t.add(k, name)
+        if (lowWeight > vw.first) lowWeight = vw.first
+        k += 1
+    }
+    for (i in 1..capacity + 1) results[Pair(0, i - 1)] = 0
+    for (i in 1..treasures.size) {
+        if (lowWeight <= capacity) {
+            for (j in lowWeight..capacity) {
+                if (weight[i] > j) {
+                    if (results[Pair(i - 1, j)] == null) results[Pair(i, j)] = 0
+                    else results[Pair(i, j)] = results[Pair(i - 1, j)]!!
+                } else {
+                    if (results[Pair(i - 1, j)] == 0) results[Pair(i, j)] = value[i]
+                    else {
+                        if (results[Pair(i - 1, j - weight[i])] == null) results[Pair(i, j)] =
+                            kotlin.math.max(results[Pair(i - 1, j)]!!, value[i])
+                        else results[Pair(i, j)] = kotlin.math.max(
+                            results[Pair(i - 1, j)]!!, results[Pair(i - 1, j - weight[i])]!! + value[i]
+                        )
+                    }
+                }
+                if (results[Pair(i - 1, j - weight[i])] == null) {
+                    if ((j == capacity) && (results[Pair(i, j)] == value[i])) neededT.add(i)
+                } else if ((j == capacity) && (results[Pair(i, j)] == results[Pair(i - 1, j - weight[i])]!! + value[i]))
+                    neededT.add(i)
+            }
+        }
+    }
+    val treasureSet = mutableSetOf<String>()
+    for (treasureN in neededT) {
+        treasureSet.add(t[treasureN])
+    }
+    return treasureSet
+}
