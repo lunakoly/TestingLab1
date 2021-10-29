@@ -359,16 +359,35 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
                         if (results[Pair(i - 1, j - weight[i])] == null) {
                             results[Pair(i, j)] =
                                 max(results[Pair(i - 1, j)]!!, value[i])
-                            if (j == capacity) neededT.remove(i - 1)
-                        } else results[Pair(i, j)] = max(
-                            results[Pair(i - 1, j)]!!, results[Pair(i - 1, j - weight[i])]!! + value[i]
-                        )
+                        } else {
+                            results[Pair(i, j)] = max(
+                                results[Pair(i - 1, j)]!!, results[Pair(i - 1, j - weight[i])]!! + value[i]
+                            )
+                        }
                     }
                 }
                 if (results[Pair(i - 1, j - weight[i])] == null) {
                     if ((j == capacity) && (results[Pair(i, j)] == value[i])) neededT.add(i)
-                } else if ((j == capacity) && (results[Pair(i, j)] == results[Pair(i - 1, j - weight[i])]!! + value[i]))
+                } else if ((j == capacity) && (results[Pair(i, j)] == results[Pair(
+                        i - 1,
+                        j - weight[i]
+                    )]!! + value[i])
+                ) {
                     neededT.add(i)
+                    var weightSum = 0
+                    for (treasureN in neededT) weightSum += weight[treasureN]
+                    if (weightSum > capacity) {
+                        var needToRemove = -1
+                        var maxDif = 0
+                        for (g in 1..i) {
+                            if (weight[g] >= weight[i] && value[i] - value[g] >= maxDif) {
+                                needToRemove = k
+                                if (value[i] - value[g] > maxDif) maxDif = value[i] - value[g]
+                            }
+                        }
+                        neededT.remove(needToRemove)
+                    }
+                }
             }
         }
     }
