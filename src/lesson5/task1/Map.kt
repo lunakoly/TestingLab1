@@ -368,6 +368,13 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
                 }
                 if (results[Pair(i - 1, j - weight[i])] == null) {
                     if ((j == capacity) && (results[Pair(i, j)] == value[i])) neededT.add(i)
+                    var weightSum = 0
+                    for (treasureN in neededT) weightSum += weight[treasureN]
+                    if (weightSum > capacity){
+                        var toRemove = -1
+                        for (treasureN in neededT) if (value[i] > value[treasureN]) toRemove = treasureN
+                        neededT.remove(toRemove)
+                    }
                 } else if ((j == capacity) && (results[Pair(i, j)] == results[Pair(
                         i - 1,
                         j - weight[i]
@@ -376,12 +383,14 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
                     neededT.add(i)
                     var weightSum = 0
                     for (treasureN in neededT) weightSum += weight[treasureN]
+                    println(weightSum)
                     if (weightSum > capacity) {
                         var needToRemove = -1
                         var maxDif = 0
-                        for (g in 1..i) {
-                            if (weight[g] >= weight[i] && value[i] - value[g] >= maxDif) {
+                        for (g in 1 until i) {
+                            if (weightSum - weight[g] <= capacity && value[i] - value[g] >= maxDif) {
                                 needToRemove = k
+                                println(needToRemove)
                                 if (value[i] - value[g] > maxDif) maxDif = value[i] - value[g]
                             }
                         }
