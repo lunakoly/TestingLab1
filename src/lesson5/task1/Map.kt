@@ -283,12 +283,15 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     val nmap = mutableMapOf<Int, Int>()
     var result1 = -1
+    var result3 = -1
     val result2: Int
+    var needed3 = -1
     var needed2 = -1
     for (i in list.indices) {
         nmap[i] = list[i]
     }
     for (i in 0 until nmap.size) {
+        if (nmap[i] == needed3) return Pair(result3, i)
         if (nmap[i] == needed2) {
             result2 = i
             return Pair(result1, result2)
@@ -296,6 +299,10 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
         if (nmap.containsValue(number - nmap[i]!!) && nmap[i] != number - nmap[i]!!) {
             result1 = i
             needed2 = number - nmap[i]!!
+        }
+        if (nmap[i] == number - nmap[i]!!) {
+            needed3 = nmap[i]!!
+            result3 = i
         }
     }
     return Pair(-1, -1)
@@ -326,9 +333,9 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
 
 fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
     val results = mutableMapOf<Pair<Int, Int>, Int>()
-    val weight = MutableList(treasures.size + 1) { 0 }
-    val value = MutableList(treasures.size + 1) { 0 }
-    val t = MutableList(treasures.size + 1) { "" }
+    val weight = MutableList(treasures.size) { 0 }
+    val value = MutableList(treasures.size) { 0 }
+    val t = MutableList(treasures.size) { "" }
     var lowWeight = capacity
     val neededT = mutableSetOf<Int>()
     var k = 1
@@ -352,7 +359,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
                         if (results[Pair(i - 1, j - weight[i])] == null) {
                             results[Pair(i, j)] =
                                 max(results[Pair(i - 1, j)]!!, value[i])
-                            neededT.remove(i - 1)
+                            if (j == capacity) neededT.remove(i - 1)
                         } else results[Pair(i, j)] = max(
                             results[Pair(i - 1, j)]!!, results[Pair(i - 1, j - weight[i])]!! + value[i]
                         )
@@ -365,7 +372,6 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
             }
         }
     }
-
     val treasureSet = mutableSetOf<String>()
     for (treasureN in neededT) {
         treasureSet.add(t[treasureN])
