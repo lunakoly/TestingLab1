@@ -331,7 +331,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
         if (lowWeight <= capacity) {
             for (j in lowWeight..capacity) {
                 if (weight[i] > j) {
-                    if (results[Pair(i - 1, j)] == null) results[Pair(i, j)] = 0
+                    if (results[Pair(i - 1, j)] == 0) results[Pair(i, j)] = 0
                     else results[Pair(i, j)] = results[Pair(i - 1, j)]!!
                 } else {
                     if (results[Pair(i - 1, j)] == 0) results[Pair(i, j)] = value[i]
