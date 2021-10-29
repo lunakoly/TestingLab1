@@ -315,7 +315,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     val results = mutableMapOf<Pair<Int, Int>, Int>()
     val weight = MutableList(treasures.size) { 0 }
     val value = MutableList(treasures.size) { 0 }
-    val t = MutableList<String>(treasures.size) { "" }
+    val t = MutableList(treasures.size) { "" }
     var lowWeight = capacity
     val neededT = mutableSetOf<Int>()
     var k = 1
@@ -326,6 +326,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
         if (lowWeight > vw.first) lowWeight = vw.first
         k += 1
     }
+    println(value[2])
     for (i in 1..capacity + 1) results[Pair(0, i - 1)] = 0
     for (i in 1..treasures.size) {
         if (lowWeight <= capacity) {
@@ -336,9 +337,11 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
                 } else {
                     if (results[Pair(i - 1, j)] == 0) results[Pair(i, j)] = value[i]
                     else {
-                        if (results[Pair(i - 1, j - weight[i])] == null) results[Pair(i, j)] =
-                            kotlin.math.max(results[Pair(i - 1, j)]!!, value[i])
-                        else results[Pair(i, j)] = kotlin.math.max(
+                        if (results[Pair(i - 1, j - weight[i])] == null) {
+                            results[Pair(i, j)] =
+                                kotlin.math.max(results[Pair(i - 1, j)]!!, value[i])
+                            neededT.remove(i - 1)
+                        } else results[Pair(i, j)] = kotlin.math.max(
                             results[Pair(i - 1, j)]!!, results[Pair(i - 1, j - weight[i])]!! + value[i]
                         )
                     }
@@ -350,6 +353,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
             }
         }
     }
+
     val treasureSet = mutableSetOf<String>()
     for (treasureN in neededT) {
         treasureSet.add(t[treasureN])
