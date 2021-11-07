@@ -332,7 +332,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     val value = MutableList(treasures.size) { 0 }
     val t = MutableList(treasures.size) { "" }
     var lowWeight = capacity
-    val neededT = mutableMapOf<Int, MutableSet<String>>()
+    val neededT = mutableMapOf<Pair<Int, Int>, MutableSet<String>>()
     var k = 1
     for ((name, vw) in treasures) {
         weight.add(k, vw.first)
@@ -345,33 +345,36 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     for (i in 1..treasures.size) {
         if (lowWeight <= capacity && treasures.isNotEmpty()) {
             for (j in lowWeight..capacity) {
-                if (weight[i] > j) results[Pair(i, j)] = results[Pair(i - 1, j)]!!
-                else {
+                if (weight[i] > j) {
+                    results[Pair(i, j)] = results[Pair(i - 1, j)]!!
+                    neededT[Pair(i, j)] = neededT[Pair(i - 1, j)] ?: mutableSetOf()
+                } else {
                     if (results[Pair(i - 1, j)] == 0) {
                         results[Pair(i, j)] = value[i]
-                        neededT[j] = mutableSetOf(t[i])
+                        neededT[Pair(i, j)] = mutableSetOf(t[i])
                     } else {
                         if (results[Pair(i - 1, j - weight[i])] == null) {
                             results[Pair(i, j)] =
                                 max(results[Pair(i - 1, j)]!!, value[i])
-                            if (value[i] > results[Pair(i - 1, j)]!!) neededT[j] = mutableSetOf(t[i])
+                            if (value[i] > results[Pair(i - 1, j)]!!) neededT[Pair(i, j)] = mutableSetOf(t[i])
                         } else {
                             results[Pair(i, j)] = max(
                                 results[Pair(i - 1, j)]!!, results[Pair(i - 1, j - weight[i])]!! + value[i]
                             )
                             if (results[Pair(i - 1, j - weight[i])]!! + value[i] > results[Pair(i - 1, j)]!!) {
-                                neededT[j] = neededT[j - weight[i]]!!
-                                neededT[j]!!.add(t[i])
-                            }
+                                neededT[Pair(i, j)] = neededT[Pair(i - 1, j - weight[i])] ?: mutableSetOf()
+                                neededT[Pair(i, j)]!!.add(t[i])
+                            } else neededT[Pair(i, j)] = neededT[Pair(i - 1, j)]!!
                         }
                     }
                 }
             }
         }
         println(results[Pair(i, capacity)])
+        println(neededT[Pair(i, capacity)])
     }
-    println(neededT[capacity])
-    return if (neededT[capacity] != null) neededT[capacity]!!.toSet()
+    println(neededT[Pair(treasures.size, capacity)])
+    return if (neededT[Pair(treasures.size, capacity)] != null) neededT[Pair(treasures.size, capacity)]!!.toSet()
     else emptySet()
 }
 

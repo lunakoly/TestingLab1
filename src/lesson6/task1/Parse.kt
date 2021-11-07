@@ -181,11 +181,11 @@ fun mostExpensive(description: String): String = TODO()
  */
 fun fromRoman(roman: String): Int {
     val rToN = mapOf('I' to 1, 'V' to 5, 'X' to 10, 'L' to 50, 'C' to 100, 'D' to 500, 'M' to 1000)
-    var number : Int
+    var number: Int
     try {
-        number = rToN[roman[0]]!!
+        if (roman.isNotEmpty()) number = rToN[roman[0]]!!
+        else throw NullPointerException()
         var sameNum = 0
-        println(number)
         for (i in 1 until roman.length) {
             if (rToN[roman[i - 1]]!! > rToN[roman[i]]!!) {
                 number = number.plus(rToN[roman[i]]!!)
@@ -206,7 +206,6 @@ fun fromRoman(roman: String): Int {
                 if (sameNum > 1) throw NullPointerException()
                 sameNum = 0
             }
-            println(number)
         }
     } catch (e: NullPointerException) {
         return -1
@@ -258,23 +257,21 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     var cellsN = cells / 2
     var comN = 0
     var skip = false
+    var skipThrough = 0
     while (comN < commands.length) {
         val com = commands[comN]
-        if (limit == 3) println(com)
         if (com == '>' || com == '<' || com == '+' || com == '-' || com == '[' || com == ']' || com == ' ') {
             if (!skip) {
                 if (com == '>') cellsN += 1
                 if (com == '<') cellsN -= 1
-                if (cellsN > cells - 1 || cellsN < 0) {
-                    println(device)
-                    println("$comN $cellsN")
-                    throw IllegalStateException()
-                }
+                if (cellsN > cells - 1 || cellsN < 0) throw IllegalStateException()
                 if (com == '+') device[cellsN] += 1
                 if (com == '-') device[cellsN] -= 1
                 if (com == '[') {
-                    if (device[cellsN] == 0) skip = true
-                    else {
+                    if (device[cellsN] == 0) {
+                        skip = true
+                        skipThrough -= 1
+                    } else {
                         if (cycleBegins[n] == 0) cycleBegins[n] = comN
                         else {
                             n += 1
@@ -290,7 +287,11 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                     }
                 }
             }
-            if (skip && com == ']') skip = false
+            if (skip && com == '[') skipThrough += 1
+            if (skip && com == ']') {
+                if (skipThrough == 0) skip = false
+                else skipThrough -= 1
+            }
             if (comN == commands.length - 1) break
             comN += 1
             comCount += 1
@@ -304,6 +305,5 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         if (commands[i] == ']') eCount += 1
     }
     if (bCount != eCount) throw IllegalArgumentException()
-    println(device)
     return device
 }
