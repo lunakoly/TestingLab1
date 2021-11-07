@@ -2,6 +2,10 @@
 
 package lesson6.task1
 
+import java.lang.IllegalArgumentException
+import java.lang.IllegalStateException
+import kotlin.NullPointerException
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -175,7 +179,40 @@ fun mostExpensive(description: String): String = TODO()
  *
  * Вернуть -1, если roman не является корректным римским числом
  */
-fun fromRoman(roman: String): Int = TODO()
+fun fromRoman(roman: String): Int {
+    val rToN = mapOf('I' to 1, 'V' to 5, 'X' to 10, 'L' to 50, 'C' to 100, 'D' to 500, 'M' to 1000)
+    var number : Int
+    try {
+        number = rToN[roman[0]]!!
+        var sameNum = 0
+        println(number)
+        for (i in 1 until roman.length) {
+            if (rToN[roman[i - 1]]!! > rToN[roman[i]]!!) {
+                number = number.plus(rToN[roman[i]]!!)
+                sameNum = 0
+            }
+            if (rToN[roman[i - 1]]!! == rToN[roman[i]]!!) {
+                number = number.plus(rToN[roman[i]]!!)
+                sameNum += 1
+                if (sameNum > 3) throw NullPointerException()
+            }
+            if (rToN[roman[i - 1]]!! < rToN[roman[i]]!! && rToN[roman[i]]!! > number) {
+                number = rToN[roman[i]]!! - number
+                if (sameNum > 1) throw NullPointerException()
+                sameNum = 0
+            }
+            if (rToN[roman[i - 1]]!! < rToN[roman[i]]!! && rToN[roman[i]]!! < number) {
+                number = number + rToN[roman[i]]!! - 2 * rToN[roman[i - 1]]!!
+                if (sameNum > 1) throw NullPointerException()
+                sameNum = 0
+            }
+            println(number)
+        }
+    } catch (e: NullPointerException) {
+        return -1
+    }
+    return (number)
+}
 
 /**
  * Очень сложная (7 баллов)
@@ -213,4 +250,60 @@ fun fromRoman(roman: String): Int = TODO()
  * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
  *
  */
-fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
+    val device = MutableList(cells) { 0 }
+    var comCount = 0
+    val cycleBegins = mutableListOf(0)
+    var n = 0
+    var cellsN = cells / 2
+    var comN = 0
+    var skip = false
+    while (comN < commands.length) {
+        val com = commands[comN]
+        if (limit == 3) println(com)
+        if (com == '>' || com == '<' || com == '+' || com == '-' || com == '[' || com == ']' || com == ' ') {
+            if (!skip) {
+                if (com == '>') cellsN += 1
+                if (com == '<') cellsN -= 1
+                if (cellsN > cells - 1 || cellsN < 0) {
+                    println(device)
+                    println("$comN $cellsN")
+                    throw IllegalStateException()
+                }
+                if (com == '+') device[cellsN] += 1
+                if (com == '-') device[cellsN] -= 1
+                if (com == '[') {
+                    if (device[cellsN] == 0) skip = true
+                    else {
+                        if (cycleBegins[n] == 0) cycleBegins[n] = comN
+                        else {
+                            n += 1
+                            cycleBegins.add(n, comN)
+                        }
+                    }
+                }
+                if (com == ']') {
+                    if (device[cellsN] != 0) comN = cycleBegins[n]
+                    else {
+                        cycleBegins[n] = 0
+                        if (n != 0) n -= 1
+                    }
+                }
+            }
+            if (skip && com == ']') skip = false
+            if (comN == commands.length - 1) break
+            comN += 1
+            comCount += 1
+            if (comCount == limit) break
+        } else throw IllegalArgumentException()
+    }
+    var bCount = 0
+    var eCount = 0
+    for (i in commands.indices) {
+        if (commands[i] == '[') bCount += 1
+        if (commands[i] == ']') eCount += 1
+    }
+    if (bCount != eCount) throw IllegalArgumentException()
+    println(device)
+    return device
+}

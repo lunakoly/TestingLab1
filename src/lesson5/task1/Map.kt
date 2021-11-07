@@ -282,27 +282,22 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  */
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     val nmap = mutableMapOf<Int, Int>()
-    var result1 = -1
-    var result3 = -1
-    val result2: Int
-    var needed3 = -1
-    var needed2 = -1
+    var ind1 = -1
+    var val1: Int? = null
     for (i in list.indices) {
         nmap[i] = list[i]
     }
     for (i in 0 until nmap.size) {
-        if (nmap[i] == needed3) return Pair(result3, i)
-        if (nmap[i] == needed2) {
-            result2 = i
-            return Pair(result1, result2)
+        if (val1 != null) {
+            if (nmap[i] == number - val1) return (Pair(ind1, i))
         }
-        if (nmap.containsValue(number - nmap[i]!!) && nmap[i] != number - nmap[i]!!) {
-            result1 = i
-            needed2 = number - nmap[i]!!
+        if (nmap.containsValue(number - nmap[i]!!) && number - nmap[i]!! != nmap[i]) {
+            val1 = nmap[i]!!
+            ind1 = i
         }
-        if (nmap[i] == number - nmap[i]!!) {
-            needed3 = nmap[i]!!
-            result3 = i
+        if (val1 == null && number - nmap[i]!! == nmap[i]) {
+            val1 = nmap[i]!!
+            ind1 = i
         }
     }
     return Pair(-1, -1)
@@ -337,7 +332,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     val value = MutableList(treasures.size) { 0 }
     val t = MutableList(treasures.size) { "" }
     var lowWeight = capacity
-    val neededT = mutableSetOf<Int>()
+    val neededT = mutableMapOf<Int, MutableSet<String>>()
     var k = 1
     for ((name, vw) in treasures) {
         weight.add(k, vw.first)
@@ -346,63 +341,37 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
         if (lowWeight > vw.first) lowWeight = vw.first
         k += 1
     }
-    for (i in 1..capacity + 1) results[Pair(0, i - 1)] = 0
+    for (j in 1..capacity) results[Pair(0, j)] = 0
     for (i in 1..treasures.size) {
         if (lowWeight <= capacity && treasures.isNotEmpty()) {
             for (j in lowWeight..capacity) {
-                if (weight[i] > j) {
-                    if (results[Pair(i - 1, j)] == 0) results[Pair(i, j)] = 0
-                    else results[Pair(i, j)] = results[Pair(i - 1, j)]!!
-                } else {
-                    if (results[Pair(i - 1, j)] == 0) results[Pair(i, j)] = value[i]
-                    else {
+                if (weight[i] > j) results[Pair(i, j)] = results[Pair(i - 1, j)]!!
+                else {
+                    if (results[Pair(i - 1, j)] == 0) {
+                        results[Pair(i, j)] = value[i]
+                        neededT[j] = mutableSetOf(t[i])
+                    } else {
                         if (results[Pair(i - 1, j - weight[i])] == null) {
                             results[Pair(i, j)] =
                                 max(results[Pair(i - 1, j)]!!, value[i])
+                            if (value[i] > results[Pair(i - 1, j)]!!) neededT[j] = mutableSetOf(t[i])
                         } else {
                             results[Pair(i, j)] = max(
                                 results[Pair(i - 1, j)]!!, results[Pair(i - 1, j - weight[i])]!! + value[i]
                             )
-                        }
-                    }
-                }
-                if (results[Pair(i - 1, j - weight[i])] == null) {
-                    if ((j == capacity) && (results[Pair(i, j)] == value[i])) neededT.add(i)
-                    var weightSum = 0
-                    for (treasureN in neededT) weightSum += weight[treasureN]
-                    if (weightSum > capacity){
-                        var toRemove = -1
-                        for (treasureN in neededT) if (value[i] > value[treasureN]) toRemove = treasureN
-                        neededT.remove(toRemove)
-                    }
-                } else if ((j == capacity) && (results[Pair(i, j)] == results[Pair(
-                        i - 1,
-                        j - weight[i]
-                    )]!! + value[i])
-                ) {
-                    neededT.add(i)
-                    var weightSum = 0
-                    for (treasureN in neededT) weightSum += weight[treasureN]
-                    println(weightSum)
-                    if (weightSum > capacity) {
-                        var needToRemove = -1
-                        var maxDif = 0
-                        for (g in 1 until i) {
-                            if (weightSum - weight[g] <= capacity && value[i] - value[g] >= maxDif) {
-                                needToRemove = k
-                                println(needToRemove)
-                                if (value[i] - value[g] > maxDif) maxDif = value[i] - value[g]
+                            if (results[Pair(i - 1, j - weight[i])]!! + value[i] > results[Pair(i - 1, j)]!!) {
+                                neededT[j] = neededT[j - weight[i]]!!
+                                neededT[j]!!.add(t[i])
                             }
                         }
-                        neededT.remove(needToRemove)
                     }
                 }
             }
         }
+        println(results[Pair(i, capacity)])
     }
-    val treasureSet = mutableSetOf<String>()
-    for (treasureN in neededT) {
-        treasureSet.add(t[treasureN])
-    }
-    return treasureSet
+    println(neededT[capacity])
+    return if (neededT[capacity] != null) neededT[capacity]!!.toSet()
+    else emptySet()
 }
+
