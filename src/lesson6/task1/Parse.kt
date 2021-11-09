@@ -187,22 +187,28 @@ fun fromRoman(roman: String): Int {
         else throw NullPointerException()
         var sameNum = 0
         for (i in 1 until roman.length) {
-            if (rToN[roman[i - 1]]!! > rToN[roman[i]]!!) {
-                number = number.plus(rToN[roman[i]]!!)
+            val v1 = rToN[roman[i - 1]]
+            val v2 = rToN[roman[i]]
+            if (v1!! > v2!!) {
+                number += v2
                 sameNum = 0
             }
-            if (rToN[roman[i - 1]]!! == rToN[roman[i]]!!) {
-                number = number.plus(rToN[roman[i]]!!)
-                sameNum += 1
-                if (sameNum > 3) throw NullPointerException()
+            try {
+                if (v1 == v2) {
+                    number += v2
+                    sameNum += 1
+                    if (sameNum > 3) throw IllegalArgumentException()
+                }
+            } catch (e: IllegalArgumentException) {
+                return -1
             }
-            if (rToN[roman[i - 1]]!! < rToN[roman[i]]!! && rToN[roman[i]]!! > number) {
-                number = rToN[roman[i]]!! - number
+            if (v1 < v2 && v2 > number) {
+                number = v2 - number
                 if (sameNum > 1) throw NullPointerException()
                 sameNum = 0
             }
-            if (rToN[roman[i - 1]]!! < rToN[roman[i]]!! && rToN[roman[i]]!! < number) {
-                number = number + rToN[roman[i]]!! - 2 * rToN[roman[i - 1]]!!
+            if (v1 < v2 && v2 < number) {
+                number = number + v2 - 2 * v1
                 if (sameNum > 1) throw NullPointerException()
                 sameNum = 0
             }
@@ -258,52 +264,51 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     var comN = 0
     var skip = false
     var skipThrough = 0
-    while (comN < commands.length) {
-        val com = commands[comN]
-        if (com == '>' || com == '<' || com == '+' || com == '-' || com == '[' || com == ']' || com == ' ') {
-            if (!skip) {
-                if (com == '>') cellsN += 1
-                if (com == '<') cellsN -= 1
-                if (cellsN > cells - 1 || cellsN < 0) throw IllegalStateException()
-                if (com == '+') device[cellsN] += 1
-                if (com == '-') device[cellsN] -= 1
-                if (com == '[') {
-                    if (device[cellsN] == 0) {
-                        skip = true
-                        skipThrough -= 1
-                    } else {
-                        if (cycleBegins[n] == 0) cycleBegins[n] = comN
-                        else {
-                            n += 1
-                            cycleBegins.add(n, comN)
-                        }
-                    }
-                }
-                if (com == ']') {
-                    if (device[cellsN] != 0) comN = cycleBegins[n]
-                    else {
-                        cycleBegins[n] = 0
-                        if (n != 0) n -= 1
-                    }
-                }
-            }
-            if (skip && com == '[') skipThrough += 1
-            if (skip && com == ']') {
-                if (skipThrough == 0) skip = false
-                else skipThrough -= 1
-            }
-            if (comN == commands.length - 1) break
-            comN += 1
-            comCount += 1
-            if (comCount == limit) break
-        } else throw IllegalArgumentException()
-    }
     var bCount = 0
     var eCount = 0
     for (i in commands.indices) {
+        if (commands[i] != '>' && commands[i] != '<' && commands[i] != '+' && commands[i] != '-' && commands[i] != '[' && commands[i] != ']' && commands[i] != ' ') throw IllegalArgumentException()
         if (commands[i] == '[') bCount += 1
         if (commands[i] == ']') eCount += 1
     }
     if (bCount != eCount) throw IllegalArgumentException()
+    while (comN < commands.length) {
+        val com = commands[comN]
+        if (!skip) {
+            if (com == '>') cellsN += 1
+            if (com == '<') cellsN -= 1
+            if (cellsN > cells - 1 || cellsN < 0) throw IllegalStateException()
+            if (com == '+') device[cellsN] += 1
+            if (com == '-') device[cellsN] -= 1
+            if (com == '[') {
+                if (device[cellsN] == 0) {
+                    skip = true
+                    skipThrough -= 1
+                } else {
+                    if (cycleBegins[n] == 0) cycleBegins[n] = comN
+                    else {
+                        n += 1
+                        cycleBegins.add(n, comN)
+                    }
+                }
+            }
+            if (com == ']') {
+                if (device[cellsN] != 0) comN = cycleBegins[n]
+                else {
+                    cycleBegins[n] = 0
+                    if (n != 0) n -= 1
+                }
+            }
+        }
+        if (skip && com == '[') skipThrough += 1
+        if (skip && com == ']') {
+            if (skipThrough == 0) skip = false
+            else skipThrough -= 1
+        }
+        if (comN == commands.length - 1) break
+        comN += 1
+        comCount += 1
+        if (comCount == limit) break
+    }
     return device
 }
