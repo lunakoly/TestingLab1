@@ -274,6 +274,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     if (bCount != eCount) throw IllegalArgumentException()
     while (comN < commands.length) {
         val com = commands[comN]
+        if (skip && com == '[') skipThrough += 1
         if (!skip) {
             if (com == '>') cellsN += 1
             if (com == '<') cellsN -= 1
@@ -281,10 +282,8 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
             if (com == '+') device[cellsN] += 1
             if (com == '-') device[cellsN] -= 1
             if (com == '[') {
-                if (device[cellsN] == 0) {
-                    skip = true
-                    skipThrough -= 1
-                } else {
+                if (device[cellsN] == 0) skip = true
+                else {
                     if (cycleBegins[n] == 0) cycleBegins[n] = comN
                     else {
                         n += 1
@@ -300,15 +299,15 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                 }
             }
         }
-        if (skip && com == '[') skipThrough += 1
         if (skip && com == ']') {
             if (skipThrough == 0) skip = false
             else skipThrough -= 1
         }
+        if (!skip) comCount += 1
+        if (comCount == limit) break
         if (comN == commands.length - 1) break
         comN += 1
-        comCount += 1
-        if (comCount == limit) break
     }
+    if (cells == 86) println(cellsN)
     return device
 }

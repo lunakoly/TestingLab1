@@ -321,7 +321,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     val value = MutableList(treasures.size) { 0 }
     val t = MutableList(treasures.size) { "" }
     var lowWeight = capacity
-    val neededT = mutableMapOf<Pair<Int, Int>, MutableSet<String>>()
+    val neededT = mutableMapOf<Pair<Int, Int>, Set<String>>()
     var k = 1
     for ((name, vw) in treasures) {
         weight.add(k, vw.first)
@@ -330,36 +330,28 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
         if (lowWeight > vw.first) lowWeight = vw.first
         k += 1
     }
-    println(lowWeight)
-    if (value.size > 2) println(t[2])
     for (j in 1..capacity) results[Pair(0, j)] = 0
     for (i in 1..treasures.size) {
         if (lowWeight <= capacity && treasures.isNotEmpty()) {
             for (j in lowWeight..capacity) {
                 if (weight[i] > j) {
                     results[Pair(i, j)] = results[Pair(i - 1, j)]!!
-                    neededT[Pair(i, j)] = neededT[Pair(i - 1, j)] ?: mutableSetOf()
+                    neededT[Pair(i, j)] = neededT[Pair(i - 1, j)] ?: setOf()
                 } else {
                     if (results[Pair(i - 1, j)] == 0) {
                         results[Pair(i, j)] = value[i]
-                        neededT[Pair(i, j)] = mutableSetOf(t[i])
+                        neededT[Pair(i, j)] = setOf(t[i])
                     } else {
                         if (results[Pair(i - 1, j - weight[i])] == null) {
                             results[Pair(i, j)] = max(results[Pair(i - 1, j)]!!, value[i])
-                            if (value[i] > results[Pair(i - 1, j)]!!) neededT[Pair(i, j)] = mutableSetOf(t[i])
+                            if (value[i] > results[Pair(i - 1, j)]!!) neededT[Pair(i, j)] = setOf(t[i])
                             if (value[i] <= results[Pair(i - 1, j)]!!) neededT[Pair(i, j)] = neededT[Pair(i - 1, j)]!!
                         } else {
                             results[Pair(i, j)] = max(
                                 results[Pair(i - 1, j)]!!, results[Pair(i - 1, j - weight[i])]!! + value[i]
                             )
                             if (results[Pair(i - 1, j - weight[i])]!! + value[i] > results[Pair(i - 1, j)]!!) {
-                                if (j == capacity) println("${neededT[Pair(1, 1)]} $i $j")
-                                val tn = neededT[Pair(i - 1, j - weight[i])]
-                                tn!!.add(t[i])
-                                neededT[Pair(i - 1, j - weight[i])] = tn
-                                if (j == capacity) println("${neededT[Pair(1, 1)]} $i $j")
-                                neededT[Pair(i, j)] = tn
-                                if (j == capacity) println("${neededT[Pair(1, 1)]} $i $j")
+                                neededT[Pair(i, j)] = neededT[Pair(i - 1, j - weight[i])]!! + t[i]
                             } else neededT[Pair(i, j)] = neededT[Pair(i - 1, j)]!!
                         }
                     }
@@ -367,8 +359,6 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
             }
         }
     }
-    println(neededT[Pair(treasures.size, capacity)])
-    if (lowWeight == 1) println(neededT)
     return if (neededT[Pair(treasures.size, capacity)] != null) neededT[Pair(treasures.size, capacity)]!!.toSet()
     else emptySet()
 }
