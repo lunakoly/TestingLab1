@@ -308,6 +308,5 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         if (comN == commands.length - 1) break
         comN += 1
     }
-    if (cells == 86) println(cellsN)
     return device
 }
