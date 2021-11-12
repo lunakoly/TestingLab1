@@ -267,7 +267,9 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     var bCount = 0
     var eCount = 0
     for (i in commands.indices) {
-        if (commands[i] != '>' && commands[i] != '<' && commands[i] != '+' && commands[i] != '-' && commands[i] != '[' && commands[i] != ']' && commands[i] != ' ') throw IllegalArgumentException()
+        if (commands[i] != '>' && commands[i] != '<' && commands[i] != '+' && commands[i] != '-'
+            && commands[i] != '[' && commands[i] != ']' && commands[i] != ' '
+        ) throw IllegalArgumentException()
         if (commands[i] == '[') bCount += 1
         if (commands[i] == ']') eCount += 1
     }

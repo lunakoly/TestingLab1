@@ -359,7 +359,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
             }
         }
     }
-    return if (neededT[Pair(treasures.size, capacity)] != null) neededT[Pair(treasures.size, capacity)]!!.toSet()
+    return if (neededT[Pair(treasures.size, capacity)] != null) neededT[Pair(treasures.size, capacity)]!!
     else emptySet()
 }
 
