@@ -90,8 +90,10 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
     for (n in substrings.indices) {
         if (substrings[n].length > 1 && substrings[n][0] == substrings[n][1]) {
             var reg = Regex(substrings[n], setOf(RegexOption.IGNORE_CASE, RegexOption.LITERAL)).find(text)
-            if (reg == null) break
-            else {
+            if (reg == null) {
+                results[substrings[n]] = 0
+                break
+            } else {
                 results[substrings[n]] = 1
                 begInd = reg.range.first + 1
                 while (reg != null) {
