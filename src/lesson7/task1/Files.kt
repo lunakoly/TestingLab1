@@ -87,23 +87,26 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
     val results = mutableMapOf<String, Int>()
     val text = File(inputName).readLines().toString()
     var begInd: Int
+    println(text)
     for (n in substrings.indices) {
-        if (substrings[n].length > 1 && substrings[n][0] == substrings[n][1]) {
-            var reg = Regex(substrings[n], setOf(RegexOption.IGNORE_CASE, RegexOption.LITERAL)).find(text)
-            if (reg == null) results[substrings[n]] = 0
+        val subS = substrings[n]
+        if (subS.length > 1 && subS[0].equals(subS[1], true)) {
+            var reg = Regex(subS, setOf(RegexOption.IGNORE_CASE, RegexOption.LITERAL)).find(text)
+            if (reg == null) results[subS] = 0
             else {
-                results[substrings[n]] = 1
+                results[subS] = 1
                 begInd = reg.range.first + 1
                 while (reg != null) {
-                    reg = Regex(substrings[n], setOf(RegexOption.IGNORE_CASE, RegexOption.LITERAL)).find(text, begInd)
+                    reg = Regex(subS, setOf(RegexOption.IGNORE_CASE, RegexOption.LITERAL)).find(text, begInd)
                     if (reg == null) break
-                    results[substrings[n]] = results[substrings[n]]!! + 1
+                    results[subS] = results[subS]!! + 1
                     begInd = reg.range.first + 1
+                    println("${subS} $begInd")
                 }
             }
         } else {
-            val reg = Regex(substrings[n], setOf(RegexOption.IGNORE_CASE, RegexOption.LITERAL)).findAll(text)
-            results[substrings[n]] = reg.count()
+            val reg = Regex(subS, setOf(RegexOption.IGNORE_CASE, RegexOption.LITERAL)).findAll(text)
+            results[subS] = reg.count()
         }
     }
     return results
