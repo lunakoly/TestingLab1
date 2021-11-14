@@ -272,6 +272,7 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
         ) throw IllegalArgumentException()
         if (commands[i] == '[') bCount += 1
         if (commands[i] == ']') eCount += 1
+        if (eCount > bCount) throw IllegalArgumentException()
     }
     if (bCount != eCount) throw IllegalArgumentException()
     while (comN < commands.length) {
