@@ -183,8 +183,13 @@ fun fromRoman(roman: String): Int {
     val rToN = mapOf('I' to 1, 'V' to 5, 'X' to 10, 'L' to 50, 'C' to 100, 'D' to 500, 'M' to 1000)
     var number: Int
     try {
-        if (roman.isNotEmpty()) number = rToN[roman[0]]!!
-        else throw NullPointerException()
+        if (roman.isNotEmpty()) {
+            try {
+                number = rToN[roman[0]]!!
+            } catch (e: NullPointerException) {
+                return -1
+            }
+        } else throw IllegalArgumentException()
         var sameNum = 0
         for (i in 1 until roman.length) {
             val v1 = rToN[roman[i - 1]]
@@ -193,27 +198,23 @@ fun fromRoman(roman: String): Int {
                 number += v2
                 sameNum = 0
             }
-            try {
-                if (v1 == v2) {
-                    number += v2
-                    sameNum += 1
-                    if (sameNum > 3) throw IllegalArgumentException()
-                }
-            } catch (e: IllegalArgumentException) {
-                return -1
+            if (v1 == v2) {
+                number += v2
+                sameNum += 1
+                if (sameNum > 3) throw IllegalArgumentException()
             }
             if (v1 < v2 && v2 > number) {
                 number = v2 - number
-                if (sameNum > 1) throw NullPointerException()
+                if (sameNum > 1) throw IllegalArgumentException()
                 sameNum = 0
             }
             if (v1 < v2 && v2 < number) {
                 number = number + v2 - 2 * v1
-                if (sameNum > 1) throw NullPointerException()
+                if (sameNum > 1) throw IllegalArgumentException()
                 sameNum = 0
             }
         }
-    } catch (e: NullPointerException) {
+    } catch (e: IllegalArgumentException) {
         return -1
     }
     return (number)

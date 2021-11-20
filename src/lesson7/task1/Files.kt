@@ -64,14 +64,15 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  */
 fun deleteMarked(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
-    for (line in File(inputName).readLines()) {
-        if (line.isEmpty()) writer.newLine()
-        else if (line[0] != '_') {
-            writer.write(line)
-            writer.newLine()
+    writer.use { writer ->
+        for (line in File(inputName).readLines()) {
+            if (line.isEmpty()) writer.newLine()
+            else if (line[0] != '_') {
+                writer.write(line)
+                writer.newLine()
+            }
         }
     }
-    writer.close()
 }
 
 /**
@@ -85,12 +86,11 @@ fun deleteMarked(inputName: String, outputName: String) {
  */
 fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
     val results = mutableMapOf<String, Int>()
-    val text = File(inputName).readLines().toString()
+    val text = File(inputName).readText()
     var begInd: Int
-    println(text)
     for (n in substrings.indices) {
         val subS = substrings[n]
-        if (subS.length > 1 && subS[0].equals(subS[1], true)) {
+        if (subS.length >= 2 && subS[0].equals(subS[1], true)) {
             var reg = Regex(subS, setOf(RegexOption.IGNORE_CASE, RegexOption.LITERAL)).find(text)
             if (reg == null) results[subS] = 0
             else {
@@ -101,7 +101,6 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
                     if (reg == null) break
                     results[subS] = results[subS]!! + 1
                     begInd = reg.range.first + 1
-                    println("${subS} $begInd")
                 }
             }
         } else {
