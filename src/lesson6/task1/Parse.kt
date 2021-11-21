@@ -186,7 +186,7 @@ fun fromRoman(roman: String): Int {
         if (roman.isNotEmpty()) {
             try {
                 number = rToN[roman[0]]!!
-            } catch (e: NullPointerException) {
+            } catch (e: java.lang.NullPointerException) {
                 throw IllegalArgumentException()
             }
         } else throw IllegalArgumentException()
