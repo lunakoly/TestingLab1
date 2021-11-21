@@ -332,10 +332,10 @@ fun replaceBegAndEnd(text: String, pattern: String, beg: String, end: String): S
 }
 
 fun envelopEmptyLines(text: String): String {
-    val strings = text.split(Regex("\n\r"))
+    val strings = text.split(Regex("\n{2}"))
     var result = ""
     for (element in strings) result += "<p>$element</p>\n"
-    return if (Regex("\n\r").containsMatchIn(text)) result
+    return if (Regex("\n{2}").containsMatchIn(text)) result
     else text
 }
 
