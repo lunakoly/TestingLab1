@@ -335,8 +335,7 @@ fun envelopEmptyLines(text: String): String {
     val strings = text.split(Regex("\n{2}"))
     var result = ""
     for (element in strings) result += "<p>$element</p>\n"
-    return if (Regex("\n{2}").containsMatchIn(text)) result
-    else text
+    return result
 }
 
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
