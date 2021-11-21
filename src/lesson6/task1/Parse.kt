@@ -2,8 +2,9 @@
 
 package lesson6.task1
 
-import java.lang.IllegalArgumentException
+
 import java.lang.IllegalStateException
+import kotlin.IllegalArgumentException
 import kotlin.NullPointerException
 
 // Урок 6: разбор строк, исключения
@@ -186,7 +187,7 @@ fun fromRoman(roman: String): Int {
         if (roman.isNotEmpty()) {
             try {
                 number = rToN[roman[0]]!!
-            } catch (e: java.lang.NullPointerException) {
+            } catch (e: NullPointerException) {
                 throw IllegalArgumentException()
             }
         } else throw IllegalArgumentException()
@@ -194,7 +195,8 @@ fun fromRoman(roman: String): Int {
         for (i in 1 until roman.length) {
             val v1 = rToN[roman[i - 1]]
             val v2 = rToN[roman[i]]
-            if (v1!! > v2!!) {
+            if (v1 == null || v2 == null) throw IllegalArgumentException()
+            if (v1 > v2) {
                 number += v2
                 sameNum = 0
             }
