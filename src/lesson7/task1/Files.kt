@@ -315,30 +315,32 @@ fun replaceBegAndEnd(text: String, pattern: String, beg: String, end: String): S
     val realCount: Int = if (count % 2 != 0) count - 1
     else count
     val strings = regex.split(text)
-    var result = strings[0]
+    val result = StringBuilder(strings[0])
     var fix: Boolean
     var countS = 0
     for (i in 1..count step 2) {
         if (i <= realCount) {
             countS += Regex("${pattern[0]}", RegexOption.LITERAL).findAll(result).count()
             fix = countS % 2 == 0
-            result += beg + strings[i] + end + strings[i + 1]
-            if (strings[i + 1][0] == pattern[0] && fix) result =
-                result.replace(Regex("$end${pattern[0]}", RegexOption.LITERAL), "${pattern[0]}$end")
-        } else result += pattern + strings[i]
+            result.append(beg + strings[i] + end + strings[i + 1])
+            if (strings[i + 1][0] == pattern[0] && fix) {
+                val str = result.replace(Regex("$end${pattern[0]}", RegexOption.LITERAL), "${pattern[0]}$end")
+                result.append(str)
+            }
+        } else result.append(pattern + strings[i])
 
     }
-    return result
+    return result.toString()
 }
 
 fun envelopEmptyLines(text: String): String {
     val strings = text.split(Regex("\n{2}"))
-    var result = ""
+    val result = StringBuilder()
     for (subS in strings) {
-        result += if (!subS.matches(Regex("\n+"))) "<p>${subS}</p>\n"
-        else subS
+        if (!subS.matches(Regex("\n+"))) result.append("<p>${subS}</p>\n")
+        else result.append(subS)
     }
-    return result
+    return result.toString()
 }
 
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
