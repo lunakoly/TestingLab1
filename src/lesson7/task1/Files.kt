@@ -64,7 +64,7 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  */
 fun deleteMarked(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
-    writer.use { writer ->
+    writer.use {
         for (line in File(inputName).readLines()) {
             if (line.isEmpty()) writer.newLine()
             else if (line[0] != '_') {
@@ -90,22 +90,17 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
     var begInd: Int
     for (n in substrings.indices) {
         val subS = substrings[n]
-        if (subS.length >= 2 && subS[0].equals(subS[1], true)) {
-            var reg = Regex(subS, setOf(RegexOption.IGNORE_CASE, RegexOption.LITERAL)).find(text)
-            if (reg == null) results[subS] = 0
-            else {
-                results[subS] = 1
+        var reg = Regex(subS, setOf(RegexOption.IGNORE_CASE, RegexOption.LITERAL)).find(text)
+        if (reg == null) results[subS] = 0
+        else {
+            results[subS] = 1
+            begInd = reg.range.first + 1
+            while (reg != null) {
+                reg = Regex(subS, setOf(RegexOption.IGNORE_CASE, RegexOption.LITERAL)).find(text, begInd)
+                if (reg == null) break
+                results[subS] = results[subS]!! + 1
                 begInd = reg.range.first + 1
-                while (reg != null) {
-                    reg = Regex(subS, setOf(RegexOption.IGNORE_CASE, RegexOption.LITERAL)).find(text, begInd)
-                    if (reg == null) break
-                    results[subS] = results[subS]!! + 1
-                    begInd = reg.range.first + 1
-                }
             }
-        } else {
-            val reg = Regex(subS, setOf(RegexOption.IGNORE_CASE, RegexOption.LITERAL)).findAll(text)
-            results[subS] = reg.count()
         }
     }
     return results
@@ -314,8 +309,47 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  *
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
+fun replaceBegAndEnd(text: String, pattern: String, beg: String, end: String): String {
+    val regex = Regex(pattern, RegexOption.LITERAL)
+    val count = regex.findAll(text).count()
+    val realCount: Int = if (count % 2 != 0) count - 1
+    else count
+    val strings = regex.split(text)
+    var result = strings[0]
+    var fix: Boolean
+    var countS = 0
+    for (i in 1..count step 2) {
+        if (i <= realCount) {
+            countS += Regex("${pattern[0]}", RegexOption.LITERAL).findAll(result).count()
+            fix = countS % 2 == 0
+            result += beg + strings[i] + end + strings[i + 1]
+            if (strings[i + 1][0] == pattern[0] && fix) result =
+                result.replace(Regex("$end${pattern[0]}", RegexOption.LITERAL), "${pattern[0]}$end")
+        } else result += pattern + strings[i]
+
+    }
+    return result
+}
+
+fun envelopEmptyLines(text: String): String {
+    val strings = text.split(Regex("\n\\s"))
+    var result = ""
+    for (element in strings) result += "<p>$element</p>\n"
+    return if (Regex("\n\\s").containsMatchIn(text)) result
+    else text
+}
+
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    var text = File(inputName).readText()
+    text = envelopEmptyLines(text)
+    text = replaceBegAndEnd(text, "**", "<b>", "</b>")
+    text = replaceBegAndEnd(text, "*", "<i>", "</i>")
+    text = replaceBegAndEnd(text, "~~", "<s>", "</s>")
+    text = "<html><body>$text</body></html>"
+    writer.use {
+        writer.write(text)
+    }
 }
 
 /**

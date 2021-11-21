@@ -187,7 +187,7 @@ fun fromRoman(roman: String): Int {
             try {
                 number = rToN[roman[0]]!!
             } catch (e: NullPointerException) {
-                return -1
+                throw IllegalArgumentException()
             }
         } else throw IllegalArgumentException()
         var sameNum = 0
