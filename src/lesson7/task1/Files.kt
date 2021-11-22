@@ -327,17 +327,17 @@ fun replaceBegAndEnd(text: String, pattern: String, beg: String, end: String): S
                 val str = result.replace(Regex("$end${pattern[0]}", RegexOption.LITERAL), "${pattern[0]}$end")
                 result.append(str)
             }
-        } else result.append(pattern + strings[i])
+        } else result.append("$pattern${strings[i]}")
 
     }
     return result.toString()
 }
 
 fun envelopEmptyLines(text: String): String {
-    val strings = text.split(Regex("\n{2}"))
+    val strings = text.split(Regex("\\n{2}"))
     val result = StringBuilder()
     for (subS in strings) {
-        if (!subS.matches(Regex("\n+"))) result.append("<p>${subS}</p>\n")
+        if (!subS.matches(Regex("\\n+"))) result.append("<p>${subS}</p>\n")
         else result.append("\n\n$subS")
     }
     return result.toString()
