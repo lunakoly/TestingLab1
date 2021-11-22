@@ -333,11 +333,18 @@ fun replaceBegAndEnd(text: String, pattern: String, beg: String, end: String): S
     return result.toString()
 }
 
+fun main() {
+    var str =
+        "O'vZC+\n**4*Yb\n4n)*c|0H**&@ZN`\n.jt\n`\n\n|F)3(tX,1VV?pUhF=a9k\nPR#0AK/\nyy*G/*^G%b\n\ne~~xM{** * *&{9*9[@s8\nJ*-2y**!Q~~c#G* * **8(x**{^w;`P?,M{~~x?~~F\n\n"
+    str = envelopEmptyLines(str)
+    println(str)
+}
+
 fun envelopEmptyLines(text: String): String {
     val strings = text.split(Regex("\\n[\\n\\r]"))
     val result = StringBuilder()
     for (subS in strings) {
-        if (!subS.matches(Regex("\\s+"))) result.append("<p>${subS}</p>\n")
+        if (!subS.matches(Regex("\\s+")) && subS != "") result.append("<p>${subS}</p>\n")
         else result.append("\n\n$subS")
     }
     return result.toString()
