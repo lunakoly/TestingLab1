@@ -337,7 +337,7 @@ fun envelopEmptyLines(text: String): String {
     val strings = text.split(Regex("\\n[\\n\\r]"))
     val result = StringBuilder()
     for (subS in strings) {
-        if (!subS.matches(Regex("\\n+"))) result.append("<p>${subS}</p>\n")
+        if (!subS.matches(Regex("\\s+"))) result.append("<p>${subS}</p>\n")
         else result.append("\n\n$subS")
     }
     return result.toString()
