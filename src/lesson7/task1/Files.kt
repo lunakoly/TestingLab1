@@ -361,7 +361,7 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  */
 
 fun envelopEmptyLines(text: String): String {
-    val strings = text.split(Regex("\\n[\\n\\t\\r\\f\\v]"))
+    val strings = text.split(Regex("\\n[\\n\\t\\r]"))
     val result = StringBuilder()
     for (subS in strings) {
         if (!subS.matches(Regex("\\s+")) && subS != "") result.append("<p>${subS}</p>\n")
@@ -594,4 +594,3 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     TODO()
 }
-
