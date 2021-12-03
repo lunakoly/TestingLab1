@@ -141,7 +141,18 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    val lines = mutableListOf<String>()
+    for (line in File(inputName).readLines()) lines.add(line.trim())
+    var maxL = 0
+    for (line in lines) if (line.length > maxL) maxL = line.length
+    val writer = File(outputName).bufferedWriter()
+    writer.use {
+        for (line in lines) {
+            for (i in 1..(maxL - line.length) / 2) writer.write(" ")
+            writer.write(line)
+            writer.newLine()
+        }
+    }
 }
 
 /**
@@ -172,7 +183,46 @@ fun centerFile(inputName: String, outputName: String) {
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
 fun alignFileByWidth(inputName: String, outputName: String) {
-    TODO()
+    val lines = mutableListOf<Pair<String, Int>>()
+    for (line in File(inputName).readLines()) {
+        var newL = line.trim()
+        newL = newL.replace(Regex("\\s+"), " ")
+        val wordCount = Regex("\\S+\\s").findAll(newL).count() + 1
+        lines.add(Pair(newL, wordCount))
+    }
+    var maxL = 0
+    for ((first) in lines) if (first.length > maxL) maxL = first.length
+    val writer = File(outputName).bufferedWriter()
+    writer.use {
+        for ((line, wCount) in lines) {
+            var needToAdd: Int
+            if (maxL != line.length && wCount > 1) needToAdd = (maxL - line.length).mod(wCount - 1)
+            else {
+                writer.write(line)
+                writer.newLine()
+                continue
+            }
+            val add = (maxL - line.length) / (wCount - 1)
+            if (needToAdd == 0) {
+                for (i in line.indices) {
+                    if (line[i] == ' ') for (k in 1..add) writer.write(" ")
+                    writer.write(line[i].toString())
+                }
+            } else {
+                for (i in line.indices) {
+                    if (line[i] == ' ') {
+                        for (k in 1..add) writer.write(" ")
+                        if (needToAdd != 0) {
+                            writer.write(" ")
+                            needToAdd -= 1
+                        }
+                    }
+                    writer.write(line[i].toString())
+                }
+            }
+            writer.newLine()
+        }
+    }
 }
 
 /**
@@ -309,30 +359,6 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  *
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
-fun replaceBegAndEnd(text: String, pattern: String, beg: String, end: String): String {
-    val regex = Regex(pattern, RegexOption.LITERAL)
-    val count = regex.findAll(text).count()
-    val realCount: Int = if (count % 2 != 0) count - 1
-    else count
-    val strings = regex.split(text)
-    var result = StringBuilder(strings[0])
-    var fix: Boolean
-    var countS = 0
-    for (i in 1..count step 2) {
-        if (i <= realCount) {
-            countS += Regex("${pattern[0]}", RegexOption.LITERAL).findAll(result).count()
-            fix = countS % 2 == 0
-            result.append(beg + strings[i] + end + strings[i + 1])
-            if (strings[i + 1][0] == pattern[0] && fix) {
-                val str = result.replace(Regex("$end${pattern[0]}", RegexOption.LITERAL), "${pattern[0]}$end")
-                result = StringBuilder(str)
-            }
-        } else result.append("$pattern${strings[i]}")
-
-    }
-    return result.toString()
-}
-
 
 fun envelopEmptyLines(text: String): String {
     val strings = text.split(Regex("\\n[\\n\\r]"))
@@ -348,10 +374,55 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     var text = File(inputName).readText()
     text = envelopEmptyLines(text)
-    text = replaceBegAndEnd(text, "**", "<b>", "</b>")
-    text = replaceBegAndEnd(text, "*", "<i>", "</i>")
-    text = replaceBegAndEnd(text, "~~", "<s>", "</s>")
-    text = "<html><body>$text</body></html>"
+    val stack = mutableListOf<String>()
+    val newText = StringBuilder()
+    var skip = false
+    for (i in text.indices) {
+        if (skip) {
+            skip = false
+            continue
+        }
+        if (text[i] == '*') {
+            if (i < text.length - 1 && text[i + 1] == '*') {
+                if (stack.isNotEmpty() && stack.last() == "**") {
+                    newText.append("</b>")
+                    stack.removeLast()
+                    skip = true
+                    continue
+                } else {
+                    newText.append("<b>")
+                    stack.add("**")
+                    skip = true
+                    continue
+                }
+            } else {
+                if (stack.isNotEmpty() && stack.last() == "*") {
+                    newText.append("</i>")
+                    stack.removeLast()
+                    continue
+                } else {
+                    newText.append("<i>")
+                    stack.add("*")
+                    continue
+                }
+            }
+        } else if (i < text.length - 1 && text[i] == '~' && text[i + 1] == '~') {
+            if (stack.isNotEmpty() && stack.last() == "~~") {
+                newText.append("</s>")
+                stack.removeLast()
+                skip = true
+                continue
+            } else {
+                newText.append("<s>")
+                stack.add("~~")
+                skip = true
+                continue
+            }
+        }
+        if (stack.isNotEmpty()) println(stack)
+        newText.append(text[i])
+    }
+    text = "<html><body>$newText</body></html>"
     writer.use {
         writer.write(text)
     }

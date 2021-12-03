@@ -22,7 +22,11 @@ data class Square(val column: Int, val row: Int) {
      * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
      * Для клетки не в пределах доски вернуть пустую строку
      */
-    fun notation(): String = TODO()
+    fun notation(): String {
+        if (column !in 1..8 || row !in 1..8) return ""
+        val columns = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
+        return "${columns[column - 1]}$row"
+    }
 }
 
 /**
@@ -32,7 +36,11 @@ data class Square(val column: Int, val row: Int) {
  * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
  * Если нотация некорректна, бросить IllegalArgumentException
  */
-fun square(notation: String): Square = TODO()
+fun square(notation: String): Square {
+    if (!notation.matches(Regex("[a-h][1-8]"))) throw IllegalArgumentException()
+    val columns = mapOf('a' to 1, 'b' to 2, 'c' to 3, 'd' to 4, 'e' to 5, 'f' to 6, 'g' to 7, 'h' to 8)
+    return Square(columns[notation[0]]!!, notation[1].digitToInt())
+}
 
 /**
  * Простая (2 балла)
@@ -181,7 +189,42 @@ fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
  * Пример: knightMoveNumber(Square(3, 1), Square(6, 3)) = 3.
  * Конь может последовательно пройти через клетки (5, 2) и (4, 4) к клетке (6, 3).
  */
-fun knightMoveNumber(start: Square, end: Square): Int = TODO()
+fun knightMoveNumber(start: Square, end: Square): Int {
+    if (!start.inside() || !end.inside()) throw IllegalArgumentException()
+    val queue = ArrayDeque<Square>()
+    queue.add(start)
+    val visited = mutableMapOf(start to 0)
+    while (queue.isNotEmpty()) {
+        val next = queue.removeFirst()
+        val distance = visited[next]
+        if (next == end) return distance!!
+        val nextSquares = mutableListOf<Square>()
+        val column = next.column
+        val row = next.row
+        if (column <= 7) {
+            if (row <= 6) nextSquares.add(Square(column + 1, row + 2))
+            if (row >= 3) nextSquares.add(Square(column + 1, row - 2))
+        }
+        if (column <= 6) {
+            if (row <= 7) nextSquares.add(Square(column + 2, row + 1))
+            if (row >= 2) nextSquares.add(Square(column + 2, row - 1))
+        }
+        if (column >= 2) {
+            if (row <= 6) nextSquares.add(Square(column - 1, row + 2))
+            if (row >= 3) nextSquares.add(Square(column - 1, row - 2))
+        }
+        if (column >= 3) {
+            if (row <= 7) nextSquares.add(Square(column - 2, row + 1))
+            if (row >= 2) nextSquares.add(Square(column - 2, row - 1))
+        }
+        for (square in nextSquares) {
+            if (square in visited) continue
+            visited[square] = distance!! + 1
+            queue.add(square)
+        }
+    }
+    return 0
+}
 
 /**
  * Очень сложная (10 баллов)
@@ -203,4 +246,41 @@ fun knightMoveNumber(start: Square, end: Square): Int = TODO()
  *
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun knightTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun knightTrajectory(start: Square, end: Square): List<Square> {
+    if (!start.inside() || !end.inside()) throw IllegalArgumentException()
+    val queue = ArrayDeque<Square>()
+    queue.add(start)
+    val visited = mutableMapOf(start to 0)
+    val trajectories = mutableMapOf(start to listOf(start))
+    while (queue.isNotEmpty()) {
+        val next = queue.removeFirst()
+        val distance = visited[next]
+        if (next == end) return trajectories[next]!!
+        val nextSquares = mutableListOf<Square>()
+        val column = next.column
+        val row = next.row
+        if (column <= 7) {
+            if (row <= 6) nextSquares.add(Square(column + 1, row + 2))
+            if (row >= 3) nextSquares.add(Square(column + 1, row - 2))
+        }
+        if (column <= 6) {
+            if (row <= 7) nextSquares.add(Square(column + 2, row + 1))
+            if (row >= 2) nextSquares.add(Square(column + 2, row - 1))
+        }
+        if (column >= 2) {
+            if (row <= 6) nextSquares.add(Square(column - 1, row + 2))
+            if (row >= 3) nextSquares.add(Square(column - 1, row - 2))
+        }
+        if (column >= 3) {
+            if (row <= 7) nextSquares.add(Square(column - 2, row + 1))
+            if (row >= 2) nextSquares.add(Square(column - 2, row - 1))
+        }
+        for (square in nextSquares) {
+            if (square in visited) continue
+            visited[square] = distance!! + 1
+            trajectories[square] = trajectories[next]!! + square
+            queue.add(square)
+        }
+    }
+    return emptyList()
+}
