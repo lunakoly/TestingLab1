@@ -365,7 +365,7 @@ fun envelopEmptyLines(text: String): String {
     val result = StringBuilder()
     for (subS in strings) {
         if (!subS.matches(Regex("([\\n\\t\\r])+")) && subS != "") result.append("<p>${subS}</p>\n")
-        else result.append(subS)
+        else result.append("\n$subS\n")
     }
     return result.toString()
 }
@@ -374,6 +374,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     var text = File(inputName).readText()
     text = envelopEmptyLines(text)
+    println(text)
     val stack = mutableListOf<String>()
     val newText = StringBuilder()
     var skip = false
@@ -419,10 +420,10 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                 continue
             }
         }
-        if (stack.isNotEmpty()) println(stack)
         newText.append(text[i])
     }
     text = "<html><body>$newText</body></html>"
+    println(text)
     writer.use {
         writer.write(text)
     }
