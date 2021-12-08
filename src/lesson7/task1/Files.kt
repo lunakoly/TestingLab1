@@ -360,73 +360,8 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 
-fun envelopEmptyLines(text: String): String {
-    val strings = text.split(Regex("\\n[\\n\\t\\r]"))
-    val result = StringBuilder()
-    for (subS in strings) {
-        if (!subS.matches(Regex("[\\n\\t\\r]+")) && subS != "") result.append("<p>${subS}</p>\n")
-        else result.append("\n\n$subS")
-    }
-    return result.toString()
-}
-
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    val writer = File(outputName).bufferedWriter()
-    var text = File(inputName).readText()
-    text = envelopEmptyLines(text)
-    println(text)
-    val stack = mutableListOf<String>()
-    val newText = StringBuilder()
-    var skip = false
-    for (i in text.indices) {
-        if (skip) {
-            skip = false
-            continue
-        }
-        if (text[i] == '*') {
-            if (i < text.length - 1 && text[i + 1] == '*') {
-                if (stack.isNotEmpty() && stack.last() == "**") {
-                    newText.append("</b>")
-                    stack.removeLast()
-                    skip = true
-                    continue
-                } else {
-                    newText.append("<b>")
-                    stack.add("**")
-                    skip = true
-                    continue
-                }
-            } else {
-                if (stack.isNotEmpty() && stack.last() == "*") {
-                    newText.append("</i>")
-                    stack.removeLast()
-                    continue
-                } else {
-                    newText.append("<i>")
-                    stack.add("*")
-                    continue
-                }
-            }
-        } else if (i < text.length - 1 && text[i] == '~' && text[i + 1] == '~') {
-            if (stack.isNotEmpty() && stack.last() == "~~") {
-                newText.append("</s>")
-                stack.removeLast()
-                skip = true
-                continue
-            } else {
-                newText.append("<s>")
-                stack.add("~~")
-                skip = true
-                continue
-            }
-        }
-        newText.append(text[i])
-    }
-    text = "<html><body>$newText</body></html>"
-    println(text)
-    writer.use {
-        writer.write(text)
-    }
+    TODO()
 }
 
 /**
