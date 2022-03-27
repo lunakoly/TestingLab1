@@ -31,6 +31,12 @@ class CustomTests {
         // Empty string edge case
         assertResult("", -1)
 
+        // Non-roman symbols
+        assertResult("MX Ha-ha-ha, classic", -1)
+
+        // [FAULT FOUND]
+        assertResult("XXLIX", -1)
+
         // [FAULT FOUND]
         // Ensure there are no things like IIII
         REPEATABLE.forEach {

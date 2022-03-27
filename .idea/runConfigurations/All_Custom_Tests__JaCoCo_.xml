@@ -1,7 +1,7 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="All Custom Tests" type="JUnit" factoryName="JUnit">
+  <configuration default="false" name="All Custom Tests (JaCoCo)" type="JUnit" factoryName="JUnit">
     <module name="KotlinAsFirst2021" />
-    <extension name="coverage" sample_coverage="false">
+    <extension name="coverage" runner="jacoco">
       <pattern>
         <option name="PATTERN" value="lesson5.task1.*" />
         <option name="ENABLED" value="true" />

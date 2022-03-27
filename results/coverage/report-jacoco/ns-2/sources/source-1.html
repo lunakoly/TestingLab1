@@ -1,0 +1,435 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > ParseKt</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">lesson6.task1</a>
+</div>
+
+<h1>Coverage Summary for Class: ParseKt (lesson6.task1)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Block, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ParseKt</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    7.1%
+  </span>
+  <span class="absValue">
+    (1/14)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    21.8%
+  </span>
+  <span class="absValue">
+    (24/110)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    30.1%
+  </span>
+  <span class="absValue">
+    (31/103)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;@file:Suppress(&quot;UNUSED_PARAMETER&quot;, &quot;ConvertCallChainIntoSequence&quot;)
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;package lesson6.task1
+<i class="no-highlight">4</i>&nbsp;
+<i class="no-highlight">5</i>&nbsp;
+<i class="no-highlight">6</i>&nbsp;import java.lang.IllegalStateException
+<i class="no-highlight">7</i>&nbsp;import kotlin.IllegalArgumentException
+<i class="no-highlight">8</i>&nbsp;import kotlin.NullPointerException
+<i class="no-highlight">9</i>&nbsp;
+<i class="no-highlight">10</i>&nbsp;// Урок 6: разбор строк, исключения
+<i class="no-highlight">11</i>&nbsp;// Максимальное количество баллов = 13
+<i class="no-highlight">12</i>&nbsp;// Рекомендуемое количество баллов = 11
+<i class="no-highlight">13</i>&nbsp;// Вместе с предыдущими уроками (пять лучших, 2-6) = 40/54
+<i class="no-highlight">14</i>&nbsp;
+<i class="no-highlight">15</i>&nbsp;/**
+<i class="no-highlight">16</i>&nbsp; * Пример
+<i class="no-highlight">17</i>&nbsp; *
+<i class="no-highlight">18</i>&nbsp; * Время представлено строкой вида &quot;11:34:45&quot;, содержащей часы, минуты и секунды, разделённые двоеточием.
+<i class="no-highlight">19</i>&nbsp; * Разобрать эту строку и рассчитать количество секунд, прошедшее с начала дня.
+<i class="no-highlight">20</i>&nbsp; */
+<i class="no-highlight">21</i>&nbsp;fun timeStrToSeconds(str: String): Int {
+<b class="nc"><i class="no-highlight">22</i>&nbsp;    val parts = str.split(&quot;:&quot;)</b>
+<b class="nc"><i class="no-highlight">23</i>&nbsp;    var result = 0</b>
+<b class="nc"><i class="no-highlight">24</i>&nbsp;    for (part in parts) {</b>
+<b class="nc"><i class="no-highlight">25</i>&nbsp;        val number = part.toInt()</b>
+<b class="nc"><i class="no-highlight">26</i>&nbsp;        result = result * 60 + number</b>
+<i class="no-highlight">27</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">28</i>&nbsp;    return result</b>
+<i class="no-highlight">29</i>&nbsp;}
+<i class="no-highlight">30</i>&nbsp;
+<i class="no-highlight">31</i>&nbsp;/**
+<i class="no-highlight">32</i>&nbsp; * Пример
+<i class="no-highlight">33</i>&nbsp; *
+<i class="no-highlight">34</i>&nbsp; * Дано число n от 0 до 99.
+<i class="no-highlight">35</i>&nbsp; * Вернуть его же в виде двухсимвольной строки, от &quot;00&quot; до &quot;99&quot;
+<i class="no-highlight">36</i>&nbsp; */
+<b class="nc"><i class="no-highlight">37</i>&nbsp;fun twoDigitStr(n: Int) = if (n in 0..9) &quot;0$n&quot; else &quot;$n&quot;</b>
+<i class="no-highlight">38</i>&nbsp;
+<i class="no-highlight">39</i>&nbsp;/**
+<i class="no-highlight">40</i>&nbsp; * Пример
+<i class="no-highlight">41</i>&nbsp; *
+<i class="no-highlight">42</i>&nbsp; * Дано seconds -- время в секундах, прошедшее с начала дня.
+<i class="no-highlight">43</i>&nbsp; * Вернуть текущее время в виде строки в формате &quot;ЧЧ:ММ:СС&quot;.
+<i class="no-highlight">44</i>&nbsp; */
+<i class="no-highlight">45</i>&nbsp;fun timeSecondsToStr(seconds: Int): String {
+<b class="nc"><i class="no-highlight">46</i>&nbsp;    val hour = seconds / 3600</b>
+<b class="nc"><i class="no-highlight">47</i>&nbsp;    val minute = (seconds % 3600) / 60</b>
+<b class="nc"><i class="no-highlight">48</i>&nbsp;    val second = seconds % 60</b>
+<b class="nc"><i class="no-highlight">49</i>&nbsp;    return String.format(&quot;%02d:%02d:%02d&quot;, hour, minute, second)</b>
+<i class="no-highlight">50</i>&nbsp;}
+<i class="no-highlight">51</i>&nbsp;
+<i class="no-highlight">52</i>&nbsp;/**
+<i class="no-highlight">53</i>&nbsp; * Пример: консольный ввод
+<i class="no-highlight">54</i>&nbsp; */
+<i class="no-highlight">55</i>&nbsp;fun main() {
+<b class="nc"><i class="no-highlight">56</i>&nbsp;    println(&quot;Введите время в формате ЧЧ:ММ:СС&quot;)</b>
+<b class="nc"><i class="no-highlight">57</i>&nbsp;    val line = readLine()</b>
+<b class="nc"><i class="no-highlight">58</i>&nbsp;    if (line != null) {</b>
+<b class="nc"><i class="no-highlight">59</i>&nbsp;        val seconds = timeStrToSeconds(line)</b>
+<b class="nc"><i class="no-highlight">60</i>&nbsp;        if (seconds == -1) {</b>
+<b class="nc"><i class="no-highlight">61</i>&nbsp;            println(&quot;Введённая строка $line не соответствует формату ЧЧ:ММ:СС&quot;)</b>
+<i class="no-highlight">62</i>&nbsp;        } else {
+<b class="nc"><i class="no-highlight">63</i>&nbsp;            println(&quot;Прошло секунд с начала суток: $seconds&quot;)</b>
+<i class="no-highlight">64</i>&nbsp;        }
+<i class="no-highlight">65</i>&nbsp;    } else {
+<b class="nc"><i class="no-highlight">66</i>&nbsp;        println(&quot;Достигнут &lt;конец файла&gt; в процессе чтения строки. Программа прервана&quot;)</b>
+<i class="no-highlight">67</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">68</i>&nbsp;}</b>
+<i class="no-highlight">69</i>&nbsp;
+<i class="no-highlight">70</i>&nbsp;
+<i class="no-highlight">71</i>&nbsp;/**
+<i class="no-highlight">72</i>&nbsp; * Средняя (4 балла)
+<i class="no-highlight">73</i>&nbsp; *
+<i class="no-highlight">74</i>&nbsp; * Дата представлена строкой вида &quot;15 июля 2016&quot;.
+<i class="no-highlight">75</i>&nbsp; * Перевести её в цифровой формат &quot;15.07.2016&quot;.
+<i class="no-highlight">76</i>&nbsp; * День и месяц всегда представлять двумя цифрами, например: 03.04.2011.
+<i class="no-highlight">77</i>&nbsp; * При неверном формате входной строки вернуть пустую строку.
+<i class="no-highlight">78</i>&nbsp; *
+<i class="no-highlight">79</i>&nbsp; * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
+<i class="no-highlight">80</i>&nbsp; * входными данными.
+<i class="no-highlight">81</i>&nbsp; */
+<b class="nc"><i class="no-highlight">82</i>&nbsp;fun dateStrToDigit(str: String): String = TODO()</b>
+<i class="no-highlight">83</i>&nbsp;
+<i class="no-highlight">84</i>&nbsp;/**
+<i class="no-highlight">85</i>&nbsp; * Средняя (4 балла)
+<i class="no-highlight">86</i>&nbsp; *
+<i class="no-highlight">87</i>&nbsp; * Дата представлена строкой вида &quot;15.07.2016&quot;.
+<i class="no-highlight">88</i>&nbsp; * Перевести её в строковый формат вида &quot;15 июля 2016&quot;.
+<i class="no-highlight">89</i>&nbsp; * При неверном формате входной строки вернуть пустую строку
+<i class="no-highlight">90</i>&nbsp; *
+<i class="no-highlight">91</i>&nbsp; * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
+<i class="no-highlight">92</i>&nbsp; * входными данными.
+<i class="no-highlight">93</i>&nbsp; */
+<b class="nc"><i class="no-highlight">94</i>&nbsp;fun dateDigitToStr(digital: String): String = TODO()</b>
+<i class="no-highlight">95</i>&nbsp;
+<i class="no-highlight">96</i>&nbsp;/**
+<i class="no-highlight">97</i>&nbsp; * Средняя (4 балла)
+<i class="no-highlight">98</i>&nbsp; *
+<i class="no-highlight">99</i>&nbsp; * Номер телефона задан строкой вида &quot;+7 (921) 123-45-67&quot;.
+<i class="no-highlight">100</i>&nbsp; * Префикс (+7) может отсутствовать, код города (в скобках) также может отсутствовать.
+<i class="no-highlight">101</i>&nbsp; * Может присутствовать неограниченное количество пробелов и чёрточек,
+<i class="no-highlight">102</i>&nbsp; * например, номер 12 --  34- 5 -- 67 -89 тоже следует считать легальным.
+<i class="no-highlight">103</i>&nbsp; * Перевести номер в формат без скобок, пробелов и чёрточек (но с +), например,
+<i class="no-highlight">104</i>&nbsp; * &quot;+79211234567&quot; или &quot;123456789&quot; для приведённых примеров.
+<i class="no-highlight">105</i>&nbsp; * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
+<i class="no-highlight">106</i>&nbsp; * При неверном формате вернуть пустую строку.
+<i class="no-highlight">107</i>&nbsp; *
+<i class="no-highlight">108</i>&nbsp; * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
+<i class="no-highlight">109</i>&nbsp; */
+<b class="nc"><i class="no-highlight">110</i>&nbsp;fun flattenPhoneNumber(phone: String): String = TODO()</b>
+<i class="no-highlight">111</i>&nbsp;
+<i class="no-highlight">112</i>&nbsp;/**
+<i class="no-highlight">113</i>&nbsp; * Средняя (5 баллов)
+<i class="no-highlight">114</i>&nbsp; *
+<i class="no-highlight">115</i>&nbsp; * Результаты спортсмена на соревнованиях в прыжках в длину представлены строкой вида
+<i class="no-highlight">116</i>&nbsp; * &quot;706 - % 717 % 703&quot;.
+<i class="no-highlight">117</i>&nbsp; * В строке могут присутствовать числа, черточки - и знаки процента %, разделённые пробелами;
+<i class="no-highlight">118</i>&nbsp; * число соответствует удачному прыжку, - пропущенной попытке, % заступу.
+<i class="no-highlight">119</i>&nbsp; * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
+<i class="no-highlight">120</i>&nbsp; * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
+<i class="no-highlight">121</i>&nbsp; */
+<b class="nc"><i class="no-highlight">122</i>&nbsp;fun bestLongJump(jumps: String): Int = TODO()</b>
+<i class="no-highlight">123</i>&nbsp;
+<i class="no-highlight">124</i>&nbsp;/**
+<i class="no-highlight">125</i>&nbsp; * Сложная (6 баллов)
+<i class="no-highlight">126</i>&nbsp; *
+<i class="no-highlight">127</i>&nbsp; * Результаты спортсмена на соревнованиях в прыжках в высоту представлены строкой вида
+<i class="no-highlight">128</i>&nbsp; * &quot;220 + 224 %+ 228 %- 230 + 232 %%- 234 %&quot;.
+<i class="no-highlight">129</i>&nbsp; * Здесь + соответствует удачной попытке, % неудачной, - пропущенной.
+<i class="no-highlight">130</i>&nbsp; * Высота и соответствующие ей попытки разделяются пробелом.
+<i class="no-highlight">131</i>&nbsp; * Прочитать строку и вернуть максимальную взятую высоту (230 в примере).
+<i class="no-highlight">132</i>&nbsp; * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
+<i class="no-highlight">133</i>&nbsp; * вернуть -1.
+<i class="no-highlight">134</i>&nbsp; */
+<b class="nc"><i class="no-highlight">135</i>&nbsp;fun bestHighJump(jumps: String): Int = TODO()</b>
+<i class="no-highlight">136</i>&nbsp;
+<i class="no-highlight">137</i>&nbsp;/**
+<i class="no-highlight">138</i>&nbsp; * Сложная (6 баллов)
+<i class="no-highlight">139</i>&nbsp; *
+<i class="no-highlight">140</i>&nbsp; * В строке представлено выражение вида &quot;2 + 31 - 40 + 13&quot;,
+<i class="no-highlight">141</i>&nbsp; * использующее целые положительные числа, плюсы и минусы, разделённые пробелами.
+<i class="no-highlight">142</i>&nbsp; * Наличие двух знаков подряд &quot;13 + + 10&quot; или двух чисел подряд &quot;1 2&quot; не допускается.
+<i class="no-highlight">143</i>&nbsp; * Вернуть значение выражения (6 для примера).
+<i class="no-highlight">144</i>&nbsp; * Про нарушении формата входной строки бросить исключение IllegalArgumentException
+<i class="no-highlight">145</i>&nbsp; */
+<b class="nc"><i class="no-highlight">146</i>&nbsp;fun plusMinus(expression: String): Int = TODO()</b>
+<i class="no-highlight">147</i>&nbsp;
+<i class="no-highlight">148</i>&nbsp;/**
+<i class="no-highlight">149</i>&nbsp; * Сложная (6 баллов)
+<i class="no-highlight">150</i>&nbsp; *
+<i class="no-highlight">151</i>&nbsp; * Строка состоит из набора слов, отделённых друг от друга одним пробелом.
+<i class="no-highlight">152</i>&nbsp; * Определить, имеются ли в строке повторяющиеся слова, идущие друг за другом.
+<i class="no-highlight">153</i>&nbsp; * Слова, отличающиеся только регистром, считать совпадающими.
+<i class="no-highlight">154</i>&nbsp; * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
+<i class="no-highlight">155</i>&nbsp; * Пример: &quot;Он пошёл в в школу&quot; =&gt; результат 9 (индекс первого &#39;в&#39;)
+<i class="no-highlight">156</i>&nbsp; */
+<b class="nc"><i class="no-highlight">157</i>&nbsp;fun firstDuplicateIndex(str: String): Int = TODO()</b>
+<i class="no-highlight">158</i>&nbsp;
+<i class="no-highlight">159</i>&nbsp;/**
+<i class="no-highlight">160</i>&nbsp; * Сложная (6 баллов)
+<i class="no-highlight">161</i>&nbsp; *
+<i class="no-highlight">162</i>&nbsp; * Строка содержит названия товаров и цены на них в формате вида
+<i class="no-highlight">163</i>&nbsp; * &quot;Хлеб 39.9; Молоко 62; Курица 184.0; Конфеты 89.9&quot;.
+<i class="no-highlight">164</i>&nbsp; * То есть, название товара отделено от цены пробелом,
+<i class="no-highlight">165</i>&nbsp; * а цена отделена от названия следующего товара точкой с запятой и пробелом.
+<i class="no-highlight">166</i>&nbsp; * Вернуть название самого дорогого товара в списке (в примере это Курица),
+<i class="no-highlight">167</i>&nbsp; * или пустую строку при нарушении формата строки.
+<i class="no-highlight">168</i>&nbsp; * Все цены должны быть больше нуля либо равны нулю.
+<i class="no-highlight">169</i>&nbsp; */
+<b class="nc"><i class="no-highlight">170</i>&nbsp;fun mostExpensive(description: String): String = TODO()</b>
+<i class="no-highlight">171</i>&nbsp;
+<i class="no-highlight">172</i>&nbsp;/**
+<i class="no-highlight">173</i>&nbsp; * Сложная (6 баллов)
+<i class="no-highlight">174</i>&nbsp; *
+<i class="no-highlight">175</i>&nbsp; * Перевести число roman, заданное в римской системе счисления,
+<i class="no-highlight">176</i>&nbsp; * в десятичную систему и вернуть как результат.
+<i class="no-highlight">177</i>&nbsp; * Римские цифры: 1 = I, 4 = IV, 5 = V, 9 = IX, 10 = X, 40 = XL, 50 = L,
+<i class="no-highlight">178</i>&nbsp; * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
+<i class="no-highlight">179</i>&nbsp; * Например: XXIII = 23, XLIV = 44, C = 100
+<i class="no-highlight">180</i>&nbsp; *
+<i class="no-highlight">181</i>&nbsp; * Вернуть -1, если roman не является корректным римским числом
+<i class="no-highlight">182</i>&nbsp; */
+<i class="no-highlight">183</i>&nbsp;fun fromRoman(roman: String): Int {
+<b class="fc"><i class="no-highlight">184</i>&nbsp;    val rToN = mapOf(&#39;I&#39; to 1, &#39;V&#39; to 5, &#39;X&#39; to 10, &#39;L&#39; to 50, &#39;C&#39; to 100, &#39;D&#39; to 500, &#39;M&#39; to 1000)</b>
+<i class="no-highlight">185</i>&nbsp;    var number: Int
+<b class="fc"><i class="no-highlight">186</i>&nbsp;    try {</b>
+<b class="fc"><i class="no-highlight">187</i>&nbsp;        if (roman.isNotEmpty()) {</b>
+<b class="fc"><i class="no-highlight">188</i>&nbsp;            try {</b>
+<b class="fc"><i class="no-highlight">189</i>&nbsp;                number = rToN[roman[0]]!!</b>
+<b class="fc"><i class="no-highlight">190</i>&nbsp;            } catch (e: NullPointerException) {</b>
+<b class="fc"><i class="no-highlight">191</i>&nbsp;                throw IllegalArgumentException()</b>
+<i class="no-highlight">192</i>&nbsp;            }
+<b class="fc"><i class="no-highlight">193</i>&nbsp;        } else throw IllegalArgumentException()</b>
+<b class="fc"><i class="no-highlight">194</i>&nbsp;        var sameNum = 0</b>
+<b class="fc"><i class="no-highlight">195</i>&nbsp;        for (i in 1 until roman.length) {</b>
+<b class="fc"><i class="no-highlight">196</i>&nbsp;            val v1 = rToN[roman[i - 1]]</b>
+<b class="fc"><i class="no-highlight">197</i>&nbsp;            val v2 = rToN[roman[i]]</b>
+<b class="pc"><i class="no-highlight">198</i>&nbsp;            if (v1 == null || v2 == null) throw IllegalArgumentException()</b>
+<b class="fc"><i class="no-highlight">199</i>&nbsp;            if (v1 &gt; v2) {</b>
+<b class="fc"><i class="no-highlight">200</i>&nbsp;                number += v2</b>
+<b class="fc"><i class="no-highlight">201</i>&nbsp;                sameNum = 0</b>
+<i class="no-highlight">202</i>&nbsp;            }
+<b class="fc"><i class="no-highlight">203</i>&nbsp;            if (v1 == v2) {</b>
+<b class="fc"><i class="no-highlight">204</i>&nbsp;                number += v2</b>
+<b class="fc"><i class="no-highlight">205</i>&nbsp;                sameNum += 1</b>
+<b class="pc"><i class="no-highlight">206</i>&nbsp;                if (sameNum &gt; 3) throw IllegalArgumentException()</b>
+<i class="no-highlight">207</i>&nbsp;            }
+<b class="fc"><i class="no-highlight">208</i>&nbsp;            if (v1 &lt; v2 &amp;&amp; v2 &gt; number) {</b>
+<b class="fc"><i class="no-highlight">209</i>&nbsp;                number = v2 - number</b>
+<b class="pc"><i class="no-highlight">210</i>&nbsp;                if (sameNum &gt; 1) throw IllegalArgumentException()</b>
+<b class="fc"><i class="no-highlight">211</i>&nbsp;                sameNum = 0</b>
+<i class="no-highlight">212</i>&nbsp;            }
+<b class="fc"><i class="no-highlight">213</i>&nbsp;            if (v1 &lt; v2 &amp;&amp; v2 &lt; number) {</b>
+<b class="fc"><i class="no-highlight">214</i>&nbsp;                number = number + v2 - 2 * v1</b>
+<b class="pc"><i class="no-highlight">215</i>&nbsp;                if (sameNum &gt; 1) throw IllegalArgumentException()</b>
+<b class="fc"><i class="no-highlight">216</i>&nbsp;                sameNum = 0</b>
+<i class="no-highlight">217</i>&nbsp;            }
+<i class="no-highlight">218</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">219</i>&nbsp;    } catch (e: IllegalArgumentException) {</b>
+<b class="fc"><i class="no-highlight">220</i>&nbsp;        return -1</b>
+<i class="no-highlight">221</i>&nbsp;    }
+<b class="fc"><i class="no-highlight">222</i>&nbsp;    return (number)</b>
+<i class="no-highlight">223</i>&nbsp;}
+<i class="no-highlight">224</i>&nbsp;
+<i class="no-highlight">225</i>&nbsp;/**
+<i class="no-highlight">226</i>&nbsp; * Очень сложная (7 баллов)
+<i class="no-highlight">227</i>&nbsp; *
+<i class="no-highlight">228</i>&nbsp; * Имеется специальное устройство, представляющее собой
+<i class="no-highlight">229</i>&nbsp; * конвейер из cells ячеек (нумеруются от 0 до cells - 1 слева направо) и датчик, двигающийся над этим конвейером.
+<i class="no-highlight">230</i>&nbsp; * Строка commands содержит последовательность команд, выполняемых данным устройством, например +&gt;+&gt;+&gt;+&gt;+
+<i class="no-highlight">231</i>&nbsp; * Каждая команда кодируется одним специальным символом:
+<i class="no-highlight">232</i>&nbsp; *	&gt; - сдвиг датчика вправо на 1 ячейку;
+<i class="no-highlight">233</i>&nbsp; *  &lt; - сдвиг датчика влево на 1 ячейку;
+<i class="no-highlight">234</i>&nbsp; *	+ - увеличение значения в ячейке под датчиком на 1 ед.;
+<i class="no-highlight">235</i>&nbsp; *	- - уменьшение значения в ячейке под датчиком на 1 ед.;
+<i class="no-highlight">236</i>&nbsp; *	[ - если значение под датчиком равно 0, в качестве следующей команды следует воспринимать
+<i class="no-highlight">237</i>&nbsp; *  	не следующую по порядку, а идущую за соответствующей следующей командой &#39;]&#39; (с учётом вложенности);
+<i class="no-highlight">238</i>&nbsp; *	] - если значение под датчиком не равно 0, в качестве следующей команды следует воспринимать
+<i class="no-highlight">239</i>&nbsp; *  	не следующую по порядку, а идущую за соответствующей предыдущей командой &#39;[&#39; (с учётом вложенности);
+<i class="no-highlight">240</i>&nbsp; *      (комбинация [] имитирует цикл)
+<i class="no-highlight">241</i>&nbsp; *  пробел - пустая команда
+<i class="no-highlight">242</i>&nbsp; *
+<i class="no-highlight">243</i>&nbsp; * Изначально все ячейки заполнены значением 0 и датчик стоит на ячейке с номером N/2 (округлять вниз)
+<i class="no-highlight">244</i>&nbsp; *
+<i class="no-highlight">245</i>&nbsp; * После выполнения limit команд или всех команд из commands следует прекратить выполнение последовательности команд.
+<i class="no-highlight">246</i>&nbsp; * Учитываются все команды, в том числе несостоявшиеся переходы (&quot;[&quot; при значении под датчиком не равном 0 и &quot;]&quot; при
+<i class="no-highlight">247</i>&nbsp; * значении под датчиком равном 0) и пробелы.
+<i class="no-highlight">248</i>&nbsp; *
+<i class="no-highlight">249</i>&nbsp; * Вернуть список размера cells, содержащий элементы ячеек устройства после завершения выполнения последовательности.
+<i class="no-highlight">250</i>&nbsp; * Например, для 10 ячеек и командной строки +&gt;+&gt;+&gt;+&gt;+ результат должен быть 0,0,0,0,0,1,1,1,1,1
+<i class="no-highlight">251</i>&nbsp; *
+<i class="no-highlight">252</i>&nbsp; * Все прочие символы следует считать ошибочными и формировать исключение IllegalArgumentException.
+<i class="no-highlight">253</i>&nbsp; * То же исключение формируется, если у символов [ ] не оказывается пары.
+<i class="no-highlight">254</i>&nbsp; * Выход за границу конвейера также следует считать ошибкой и формировать исключение IllegalStateException.
+<i class="no-highlight">255</i>&nbsp; * Считать, что ошибочные символы и непарные скобки являются более приоритетной ошибкой чем выход за границу ленты,
+<i class="no-highlight">256</i>&nbsp; * то есть если в программе присутствует некорректный символ или непарная скобка, то должно быть выброшено
+<i class="no-highlight">257</i>&nbsp; * IllegalArgumentException.
+<i class="no-highlight">258</i>&nbsp; * IllegalArgumentException должен бросаться даже если ошибочная команда не была достигнута в ходе выполнения.
+<i class="no-highlight">259</i>&nbsp; *
+<i class="no-highlight">260</i>&nbsp; */
+<i class="no-highlight">261</i>&nbsp;fun computeDeviceCells(cells: Int, commands: String, limit: Int): List&lt;Int&gt; {
+<b class="nc"><i class="no-highlight">262</i>&nbsp;    val device = MutableList(cells) { 0 }</b>
+<b class="nc"><i class="no-highlight">263</i>&nbsp;    var comCount = 0</b>
+<b class="nc"><i class="no-highlight">264</i>&nbsp;    val cycleBegins = mutableListOf(0)</b>
+<b class="nc"><i class="no-highlight">265</i>&nbsp;    var n = 0</b>
+<b class="nc"><i class="no-highlight">266</i>&nbsp;    var cellsN = cells / 2</b>
+<b class="nc"><i class="no-highlight">267</i>&nbsp;    var comN = 0</b>
+<b class="nc"><i class="no-highlight">268</i>&nbsp;    var skip = false</b>
+<b class="nc"><i class="no-highlight">269</i>&nbsp;    var skipThrough = 0</b>
+<b class="nc"><i class="no-highlight">270</i>&nbsp;    var bCount = 0</b>
+<b class="nc"><i class="no-highlight">271</i>&nbsp;    var eCount = 0</b>
+<b class="nc"><i class="no-highlight">272</i>&nbsp;    for (i in commands.indices) {</b>
+<b class="nc"><i class="no-highlight">273</i>&nbsp;        if (commands[i] != &#39;&gt;&#39; &amp;&amp; commands[i] != &#39;&lt;&#39; &amp;&amp; commands[i] != &#39;+&#39; &amp;&amp; commands[i] != &#39;-&#39;</b>
+<b class="nc"><i class="no-highlight">274</i>&nbsp;            &amp;&amp; commands[i] != &#39;[&#39; &amp;&amp; commands[i] != &#39;]&#39; &amp;&amp; commands[i] != &#39; &#39;</b>
+<b class="nc"><i class="no-highlight">275</i>&nbsp;        ) throw IllegalArgumentException()</b>
+<b class="nc"><i class="no-highlight">276</i>&nbsp;        if (commands[i] == &#39;[&#39;) bCount += 1</b>
+<b class="nc"><i class="no-highlight">277</i>&nbsp;        if (commands[i] == &#39;]&#39;) eCount += 1</b>
+<b class="nc"><i class="no-highlight">278</i>&nbsp;        if (eCount &gt; bCount) throw IllegalArgumentException()</b>
+<i class="no-highlight">279</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">280</i>&nbsp;    if (bCount != eCount) throw IllegalArgumentException()</b>
+<b class="nc"><i class="no-highlight">281</i>&nbsp;    while (comN &lt; commands.length) {</b>
+<b class="nc"><i class="no-highlight">282</i>&nbsp;        val com = commands[comN]</b>
+<b class="nc"><i class="no-highlight">283</i>&nbsp;        if (skip &amp;&amp; com == &#39;[&#39;) skipThrough += 1</b>
+<b class="nc"><i class="no-highlight">284</i>&nbsp;        if (!skip) {</b>
+<b class="nc"><i class="no-highlight">285</i>&nbsp;            if (com == &#39;&gt;&#39;) cellsN += 1</b>
+<b class="nc"><i class="no-highlight">286</i>&nbsp;            if (com == &#39;&lt;&#39;) cellsN -= 1</b>
+<b class="nc"><i class="no-highlight">287</i>&nbsp;            if (cellsN &gt; cells - 1 || cellsN &lt; 0) throw IllegalStateException()</b>
+<b class="nc"><i class="no-highlight">288</i>&nbsp;            if (com == &#39;+&#39;) device[cellsN] += 1</b>
+<b class="nc"><i class="no-highlight">289</i>&nbsp;            if (com == &#39;-&#39;) device[cellsN] -= 1</b>
+<b class="nc"><i class="no-highlight">290</i>&nbsp;            if (com == &#39;[&#39;) {</b>
+<b class="nc"><i class="no-highlight">291</i>&nbsp;                if (device[cellsN] == 0) skip = true</b>
+<i class="no-highlight">292</i>&nbsp;                else {
+<b class="nc"><i class="no-highlight">293</i>&nbsp;                    if (cycleBegins[n] == 0) cycleBegins[n] = comN</b>
+<i class="no-highlight">294</i>&nbsp;                    else {
+<b class="nc"><i class="no-highlight">295</i>&nbsp;                        n += 1</b>
+<b class="nc"><i class="no-highlight">296</i>&nbsp;                        cycleBegins.add(n, comN)</b>
+<i class="no-highlight">297</i>&nbsp;                    }
+<i class="no-highlight">298</i>&nbsp;                }
+<i class="no-highlight">299</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">300</i>&nbsp;            if (com == &#39;]&#39;) {</b>
+<b class="nc"><i class="no-highlight">301</i>&nbsp;                if (device[cellsN] != 0) comN = cycleBegins[n]</b>
+<i class="no-highlight">302</i>&nbsp;                else {
+<b class="nc"><i class="no-highlight">303</i>&nbsp;                    cycleBegins[n] = 0</b>
+<b class="nc"><i class="no-highlight">304</i>&nbsp;                    if (n != 0) n -= 1</b>
+<i class="no-highlight">305</i>&nbsp;                }
+<i class="no-highlight">306</i>&nbsp;            }
+<i class="no-highlight">307</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">308</i>&nbsp;        if (skip &amp;&amp; com == &#39;]&#39;) {</b>
+<b class="nc"><i class="no-highlight">309</i>&nbsp;            if (skipThrough == 0) skip = false</b>
+<b class="nc"><i class="no-highlight">310</i>&nbsp;            else skipThrough -= 1</b>
+<i class="no-highlight">311</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">312</i>&nbsp;        if (!skip) comCount += 1</b>
+<b class="nc"><i class="no-highlight">313</i>&nbsp;        if (comCount == limit) break</b>
+<b class="nc"><i class="no-highlight">314</i>&nbsp;        if (comN == commands.length - 1) break</b>
+<b class="nc"><i class="no-highlight">315</i>&nbsp;        comN += 1</b>
+<i class="no-highlight">316</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">317</i>&nbsp;    return device</b>
+<i class="no-highlight">318</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-03-27 14:22</div>
+</div>
+</body>
+</html>

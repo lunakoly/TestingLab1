@@ -1,0 +1,649 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > FilesKt</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">lesson7.task1</a>
+</div>
+
+<h1>Coverage Summary for Class: FilesKt (lesson7.task1)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Block, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">FilesKt</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    6.7%
+  </span>
+  <span class="absValue">
+    (1/15)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    11.2%
+  </span>
+  <span class="absValue">
+    (9/80)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    9.5%
+  </span>
+  <span class="absValue">
+    (9/95)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;@file:Suppress(&quot;UNUSED_PARAMETER&quot;, &quot;ConvertCallChainIntoSequence&quot;)
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;package lesson7.task1
+<i class="no-highlight">4</i>&nbsp;
+<i class="no-highlight">5</i>&nbsp;import java.io.File
+<i class="no-highlight">6</i>&nbsp;
+<i class="no-highlight">7</i>&nbsp;// Урок 7: работа с файлами
+<i class="no-highlight">8</i>&nbsp;// Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
+<i class="no-highlight">9</i>&nbsp;// Максимальное количество баллов = 55
+<i class="no-highlight">10</i>&nbsp;// Рекомендуемое количество баллов = 20
+<i class="no-highlight">11</i>&nbsp;// Вместе с предыдущими уроками (пять лучших, 3-7) = 55/103
+<i class="no-highlight">12</i>&nbsp;
+<i class="no-highlight">13</i>&nbsp;/**
+<i class="no-highlight">14</i>&nbsp; * Пример
+<i class="no-highlight">15</i>&nbsp; *
+<i class="no-highlight">16</i>&nbsp; * Во входном файле с именем inputName содержится некоторый текст.
+<i class="no-highlight">17</i>&nbsp; * Вывести его в выходной файл с именем outputName, выровняв по левому краю,
+<i class="no-highlight">18</i>&nbsp; * чтобы длина каждой строки не превосходила lineLength.
+<i class="no-highlight">19</i>&nbsp; * Слова в слишком длинных строках следует переносить на следующую строку.
+<i class="no-highlight">20</i>&nbsp; * Слишком короткие строки следует дополнять словами из следующей строки.
+<i class="no-highlight">21</i>&nbsp; * Пустые строки во входном файле обозначают конец абзаца,
+<i class="no-highlight">22</i>&nbsp; * их следует сохранить и в выходном файле
+<i class="no-highlight">23</i>&nbsp; */
+<i class="no-highlight">24</i>&nbsp;fun alignFile(inputName: String, lineLength: Int, outputName: String) {
+<b class="nc"><i class="no-highlight">25</i>&nbsp;    val writer = File(outputName).bufferedWriter()</b>
+<b class="nc"><i class="no-highlight">26</i>&nbsp;    var currentLineLength = 0</b>
+<i class="no-highlight">27</i>&nbsp;    fun append(word: String) {
+<b class="nc"><i class="no-highlight">28</i>&nbsp;        if (currentLineLength &gt; 0) {</b>
+<b class="nc"><i class="no-highlight">29</i>&nbsp;            if (word.length + currentLineLength &gt;= lineLength) {</b>
+<b class="nc"><i class="no-highlight">30</i>&nbsp;                writer.newLine()</b>
+<b class="nc"><i class="no-highlight">31</i>&nbsp;                currentLineLength = 0</b>
+<i class="no-highlight">32</i>&nbsp;            } else {
+<b class="nc"><i class="no-highlight">33</i>&nbsp;                writer.write(&quot; &quot;)</b>
+<b class="nc"><i class="no-highlight">34</i>&nbsp;                currentLineLength++</b>
+<i class="no-highlight">35</i>&nbsp;            }
+<i class="no-highlight">36</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">37</i>&nbsp;        writer.write(word)</b>
+<b class="nc"><i class="no-highlight">38</i>&nbsp;        currentLineLength += word.length</b>
+<b class="nc"><i class="no-highlight">39</i>&nbsp;    }</b>
+<b class="nc"><i class="no-highlight">40</i>&nbsp;    for (line in File(inputName).readLines()) {</b>
+<b class="nc"><i class="no-highlight">41</i>&nbsp;        if (line.isEmpty()) {</b>
+<b class="nc"><i class="no-highlight">42</i>&nbsp;            writer.newLine()</b>
+<b class="nc"><i class="no-highlight">43</i>&nbsp;            if (currentLineLength &gt; 0) {</b>
+<b class="nc"><i class="no-highlight">44</i>&nbsp;                writer.newLine()</b>
+<b class="nc"><i class="no-highlight">45</i>&nbsp;                currentLineLength = 0</b>
+<i class="no-highlight">46</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">47</i>&nbsp;            continue</b>
+<i class="no-highlight">48</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">49</i>&nbsp;        for (word in line.split(Regex(&quot;\\s+&quot;))) {</b>
+<b class="nc"><i class="no-highlight">50</i>&nbsp;            append(word)</b>
+<i class="no-highlight">51</i>&nbsp;        }
+<i class="no-highlight">52</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">53</i>&nbsp;    writer.close()</b>
+<b class="nc"><i class="no-highlight">54</i>&nbsp;}</b>
+<i class="no-highlight">55</i>&nbsp;
+<i class="no-highlight">56</i>&nbsp;/**
+<i class="no-highlight">57</i>&nbsp; * Простая (8 баллов)
+<i class="no-highlight">58</i>&nbsp; *
+<i class="no-highlight">59</i>&nbsp; * Во входном файле с именем inputName содержится некоторый текст.
+<i class="no-highlight">60</i>&nbsp; * Некоторые его строки помечены на удаление первым символом _ (подчёркивание).
+<i class="no-highlight">61</i>&nbsp; * Перенести в выходной файл с именем outputName все строки входного файла, убрав при этом помеченные на удаление.
+<i class="no-highlight">62</i>&nbsp; * Все остальные строки должны быть перенесены без изменений, включая пустые строки.
+<i class="no-highlight">63</i>&nbsp; * Подчёркивание в середине и/или в конце строк значения не имеет.
+<i class="no-highlight">64</i>&nbsp; */
+<i class="no-highlight">65</i>&nbsp;fun deleteMarked(inputName: String, outputName: String) {
+<b class="pc"><i class="no-highlight">66</i>&nbsp;    val writer = File(outputName).bufferedWriter()</b>
+<b class="fc"><i class="no-highlight">67</i>&nbsp;    writer.use {</b>
+<b class="fc"><i class="no-highlight">68</i>&nbsp;        for (line in File(inputName).readLines()) {</b>
+<b class="fc"><i class="no-highlight">69</i>&nbsp;            if (line.isEmpty()) writer.newLine()</b>
+<b class="fc"><i class="no-highlight">70</i>&nbsp;            else if (line[0] != &#39;_&#39;) {</b>
+<b class="fc"><i class="no-highlight">71</i>&nbsp;                writer.write(line)</b>
+<b class="fc"><i class="no-highlight">72</i>&nbsp;                writer.newLine()</b>
+<i class="no-highlight">73</i>&nbsp;            }
+<i class="no-highlight">74</i>&nbsp;        }
+<b class="fc"><i class="no-highlight">75</i>&nbsp;    }</b>
+<b class="fc"><i class="no-highlight">76</i>&nbsp;}</b>
+<i class="no-highlight">77</i>&nbsp;
+<i class="no-highlight">78</i>&nbsp;/**
+<i class="no-highlight">79</i>&nbsp; * Средняя (14 баллов)
+<i class="no-highlight">80</i>&nbsp; *
+<i class="no-highlight">81</i>&nbsp; * Во входном файле с именем inputName содержится некоторый текст.
+<i class="no-highlight">82</i>&nbsp; * На вход подаётся список строк substrings.
+<i class="no-highlight">83</i>&nbsp; * Вернуть ассоциативный массив с числом вхождений каждой из строк в текст.
+<i class="no-highlight">84</i>&nbsp; * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
+<i class="no-highlight">85</i>&nbsp; *
+<i class="no-highlight">86</i>&nbsp; */
+<i class="no-highlight">87</i>&nbsp;fun countSubstrings(inputName: String, substrings: List&lt;String&gt;): Map&lt;String, Int&gt; {
+<b class="nc"><i class="no-highlight">88</i>&nbsp;    val results = mutableMapOf&lt;String, Int&gt;()</b>
+<b class="nc"><i class="no-highlight">89</i>&nbsp;    val text = File(inputName).readText()</b>
+<i class="no-highlight">90</i>&nbsp;    var begInd: Int
+<b class="nc"><i class="no-highlight">91</i>&nbsp;    for (n in substrings.indices) {</b>
+<b class="nc"><i class="no-highlight">92</i>&nbsp;        val subS = substrings[n]</b>
+<b class="nc"><i class="no-highlight">93</i>&nbsp;        var reg = Regex(subS, setOf(RegexOption.IGNORE_CASE, RegexOption.LITERAL)).find(text)</b>
+<b class="nc"><i class="no-highlight">94</i>&nbsp;        if (reg == null) results[subS] = 0</b>
+<i class="no-highlight">95</i>&nbsp;        else {
+<b class="nc"><i class="no-highlight">96</i>&nbsp;            results[subS] = 1</b>
+<b class="nc"><i class="no-highlight">97</i>&nbsp;            begInd = reg.range.first + 1</b>
+<i class="no-highlight">98</i>&nbsp;            while (reg != null) {
+<b class="nc"><i class="no-highlight">99</i>&nbsp;                reg = Regex(subS, setOf(RegexOption.IGNORE_CASE, RegexOption.LITERAL)).find(text, begInd)</b>
+<b class="nc"><i class="no-highlight">100</i>&nbsp;                if (reg == null) break</b>
+<b class="nc"><i class="no-highlight">101</i>&nbsp;                results[subS] = results[subS]!! + 1</b>
+<b class="nc"><i class="no-highlight">102</i>&nbsp;                begInd = reg.range.first + 1</b>
+<i class="no-highlight">103</i>&nbsp;            }
+<i class="no-highlight">104</i>&nbsp;        }
+<i class="no-highlight">105</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">106</i>&nbsp;    return results</b>
+<i class="no-highlight">107</i>&nbsp;}
+<i class="no-highlight">108</i>&nbsp;
+<i class="no-highlight">109</i>&nbsp;/**
+<i class="no-highlight">110</i>&nbsp; * Средняя (12 баллов)
+<i class="no-highlight">111</i>&nbsp; *
+<i class="no-highlight">112</i>&nbsp; * В русском языке, как правило, после букв Ж, Ч, Ш, Щ пишется И, А, У, а не Ы, Я, Ю.
+<i class="no-highlight">113</i>&nbsp; * Во входном файле с именем inputName содержится некоторый текст на русском языке.
+<i class="no-highlight">114</i>&nbsp; * Проверить текст во входном файле на соблюдение данного правила и вывести в выходной
+<i class="no-highlight">115</i>&nbsp; * файл outputName текст с исправленными ошибками.
+<i class="no-highlight">116</i>&nbsp; *
+<i class="no-highlight">117</i>&nbsp; * Регистр заменённых букв следует сохранять.
+<i class="no-highlight">118</i>&nbsp; *
+<i class="no-highlight">119</i>&nbsp; * Исключения (жюри, брошюра, парашют) в рамках данного задания обрабатывать не нужно
+<i class="no-highlight">120</i>&nbsp; *
+<i class="no-highlight">121</i>&nbsp; */
+<i class="no-highlight">122</i>&nbsp;fun sibilants(inputName: String, outputName: String) {
+<b class="nc"><i class="no-highlight">123</i>&nbsp;    TODO()</b>
+<i class="no-highlight">124</i>&nbsp;}
+<i class="no-highlight">125</i>&nbsp;
+<i class="no-highlight">126</i>&nbsp;/**
+<i class="no-highlight">127</i>&nbsp; * Средняя (15 баллов)
+<i class="no-highlight">128</i>&nbsp; *
+<i class="no-highlight">129</i>&nbsp; * Во входном файле с именем inputName содержится некоторый текст (в том числе, и на русском языке).
+<i class="no-highlight">130</i>&nbsp; * Вывести его в выходной файл с именем outputName, выровняв по центру
+<i class="no-highlight">131</i>&nbsp; * относительно самой длинной строки.
+<i class="no-highlight">132</i>&nbsp; *
+<i class="no-highlight">133</i>&nbsp; * Выравнивание следует производить путём добавления пробелов в начало строки.
+<i class="no-highlight">134</i>&nbsp; *
+<i class="no-highlight">135</i>&nbsp; *
+<i class="no-highlight">136</i>&nbsp; * Следующие правила должны быть выполнены:
+<i class="no-highlight">137</i>&nbsp; * 1) Пробелы в начале и в конце всех строк не следует сохранять.
+<i class="no-highlight">138</i>&nbsp; * 2) В случае невозможности выравнивания строго по центру, строка должна быть сдвинута в ЛЕВУЮ сторону
+<i class="no-highlight">139</i>&nbsp; * 3) Пустые строки не являются особым случаем, их тоже следует выравнивать
+<i class="no-highlight">140</i>&nbsp; * 4) Число строк в выходном файле должно быть равно числу строк во входном (в т. ч. пустых)
+<i class="no-highlight">141</i>&nbsp; *
+<i class="no-highlight">142</i>&nbsp; */
+<i class="no-highlight">143</i>&nbsp;fun centerFile(inputName: String, outputName: String) {
+<b class="nc"><i class="no-highlight">144</i>&nbsp;    val lines = mutableListOf&lt;String&gt;()</b>
+<b class="nc"><i class="no-highlight">145</i>&nbsp;    for (line in File(inputName).readLines()) lines.add(line.trim())</b>
+<b class="nc"><i class="no-highlight">146</i>&nbsp;    var maxL = 0</b>
+<b class="nc"><i class="no-highlight">147</i>&nbsp;    for (line in lines) if (line.length &gt; maxL) maxL = line.length</b>
+<b class="nc"><i class="no-highlight">148</i>&nbsp;    val writer = File(outputName).bufferedWriter()</b>
+<b class="nc"><i class="no-highlight">149</i>&nbsp;    writer.use {</b>
+<b class="nc"><i class="no-highlight">150</i>&nbsp;        for (line in lines) {</b>
+<b class="nc"><i class="no-highlight">151</i>&nbsp;            for (i in 1..(maxL - line.length) / 2) writer.write(&quot; &quot;)</b>
+<b class="nc"><i class="no-highlight">152</i>&nbsp;            writer.write(line)</b>
+<b class="nc"><i class="no-highlight">153</i>&nbsp;            writer.newLine()</b>
+<i class="no-highlight">154</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">155</i>&nbsp;    }</b>
+<b class="nc"><i class="no-highlight">156</i>&nbsp;}</b>
+<i class="no-highlight">157</i>&nbsp;
+<i class="no-highlight">158</i>&nbsp;/**
+<i class="no-highlight">159</i>&nbsp; * Сложная (20 баллов)
+<i class="no-highlight">160</i>&nbsp; *
+<i class="no-highlight">161</i>&nbsp; * Во входном файле с именем inputName содержится некоторый текст (в том числе, и на русском языке).
+<i class="no-highlight">162</i>&nbsp; * Вывести его в выходной файл с именем outputName, выровняв по левому и правому краю относительно
+<i class="no-highlight">163</i>&nbsp; * самой длинной строки.
+<i class="no-highlight">164</i>&nbsp; * Выравнивание производить, вставляя дополнительные пробелы между словами: равномерно по всей строке
+<i class="no-highlight">165</i>&nbsp; *
+<i class="no-highlight">166</i>&nbsp; * Слова внутри строки отделяются друг от друга одним или более пробелом.
+<i class="no-highlight">167</i>&nbsp; *
+<i class="no-highlight">168</i>&nbsp; * Следующие правила должны быть выполнены:
+<i class="no-highlight">169</i>&nbsp; * 1) Каждая строка входного и выходного файла не должна начинаться или заканчиваться пробелом.
+<i class="no-highlight">170</i>&nbsp; * 2) Пустые строки или строки из пробелов трансформируются в пустые строки без пробелов.
+<i class="no-highlight">171</i>&nbsp; * 3) Строки из одного слова выводятся без пробелов.
+<i class="no-highlight">172</i>&nbsp; * 4) Число строк в выходном файле должно быть равно числу строк во входном (в т. ч. пустых).
+<i class="no-highlight">173</i>&nbsp; *
+<i class="no-highlight">174</i>&nbsp; * Равномерность определяется следующими формальными правилами:
+<i class="no-highlight">175</i>&nbsp; * 5) Число пробелов между каждыми двумя парами соседних слов не должно отличаться более, чем на 1.
+<i class="no-highlight">176</i>&nbsp; * 6) Число пробелов между более левой парой соседних слов должно быть больше или равно числу пробелов
+<i class="no-highlight">177</i>&nbsp; *    между более правой парой соседних слов.
+<i class="no-highlight">178</i>&nbsp; *
+<i class="no-highlight">179</i>&nbsp; * Следует учесть, что входной файл может содержать последовательности из нескольких пробелов  между слвоами. Такие
+<i class="no-highlight">180</i>&nbsp; * последовательности следует учитывать при выравнивании и при необходимости избавляться от лишних пробелов.
+<i class="no-highlight">181</i>&nbsp; * Из этого следуют следующие правила:
+<i class="no-highlight">182</i>&nbsp; * 7) В самой длинной строке каждая пара соседних слов должна быть отделена В ТОЧНОСТИ одним пробелом
+<i class="no-highlight">183</i>&nbsp; * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
+<i class="no-highlight">184</i>&nbsp; */
+<i class="no-highlight">185</i>&nbsp;fun alignFileByWidth(inputName: String, outputName: String) {
+<b class="nc"><i class="no-highlight">186</i>&nbsp;    val lines = mutableListOf&lt;Pair&lt;String, Int&gt;&gt;()</b>
+<b class="nc"><i class="no-highlight">187</i>&nbsp;    for (line in File(inputName).readLines()) {</b>
+<b class="nc"><i class="no-highlight">188</i>&nbsp;        var newL = line.trim()</b>
+<b class="nc"><i class="no-highlight">189</i>&nbsp;        newL = newL.replace(Regex(&quot;\\s+&quot;), &quot; &quot;)</b>
+<b class="nc"><i class="no-highlight">190</i>&nbsp;        val wordCount = Regex(&quot;\\S+\\s&quot;).findAll(newL).count() + 1</b>
+<b class="nc"><i class="no-highlight">191</i>&nbsp;        lines.add(Pair(newL, wordCount))</b>
+<i class="no-highlight">192</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">193</i>&nbsp;    var maxL = 0</b>
+<b class="nc"><i class="no-highlight">194</i>&nbsp;    for ((first) in lines) if (first.length &gt; maxL) maxL = first.length</b>
+<b class="nc"><i class="no-highlight">195</i>&nbsp;    val writer = File(outputName).bufferedWriter()</b>
+<b class="nc"><i class="no-highlight">196</i>&nbsp;    writer.use {</b>
+<b class="nc"><i class="no-highlight">197</i>&nbsp;        for ((line, wCount) in lines) {</b>
+<i class="no-highlight">198</i>&nbsp;            var needToAdd: Int
+<b class="nc"><i class="no-highlight">199</i>&nbsp;            if (maxL != line.length &amp;&amp; wCount &gt; 1) needToAdd = (maxL - line.length).mod(wCount - 1)</b>
+<i class="no-highlight">200</i>&nbsp;            else {
+<b class="nc"><i class="no-highlight">201</i>&nbsp;                writer.write(line)</b>
+<b class="nc"><i class="no-highlight">202</i>&nbsp;                writer.newLine()</b>
+<b class="nc"><i class="no-highlight">203</i>&nbsp;                continue</b>
+<i class="no-highlight">204</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">205</i>&nbsp;            val add = (maxL - line.length) / (wCount - 1)</b>
+<b class="nc"><i class="no-highlight">206</i>&nbsp;            if (needToAdd == 0) {</b>
+<b class="nc"><i class="no-highlight">207</i>&nbsp;                for (i in line.indices) {</b>
+<b class="nc"><i class="no-highlight">208</i>&nbsp;                    if (line[i] == &#39; &#39;) for (k in 1..add) writer.write(&quot; &quot;)</b>
+<b class="nc"><i class="no-highlight">209</i>&nbsp;                    writer.write(line[i].toString())</b>
+<i class="no-highlight">210</i>&nbsp;                }
+<i class="no-highlight">211</i>&nbsp;            } else {
+<b class="nc"><i class="no-highlight">212</i>&nbsp;                for (i in line.indices) {</b>
+<b class="nc"><i class="no-highlight">213</i>&nbsp;                    if (line[i] == &#39; &#39;) {</b>
+<b class="nc"><i class="no-highlight">214</i>&nbsp;                        for (k in 1..add) writer.write(&quot; &quot;)</b>
+<b class="nc"><i class="no-highlight">215</i>&nbsp;                        if (needToAdd != 0) {</b>
+<b class="nc"><i class="no-highlight">216</i>&nbsp;                            writer.write(&quot; &quot;)</b>
+<b class="nc"><i class="no-highlight">217</i>&nbsp;                            needToAdd -= 1</b>
+<i class="no-highlight">218</i>&nbsp;                        }
+<i class="no-highlight">219</i>&nbsp;                    }
+<b class="nc"><i class="no-highlight">220</i>&nbsp;                    writer.write(line[i].toString())</b>
+<i class="no-highlight">221</i>&nbsp;                }
+<i class="no-highlight">222</i>&nbsp;            }
+<b class="nc"><i class="no-highlight">223</i>&nbsp;            writer.newLine()</b>
+<i class="no-highlight">224</i>&nbsp;        }
+<b class="nc"><i class="no-highlight">225</i>&nbsp;    }</b>
+<b class="nc"><i class="no-highlight">226</i>&nbsp;}</b>
+<i class="no-highlight">227</i>&nbsp;
+<i class="no-highlight">228</i>&nbsp;/**
+<i class="no-highlight">229</i>&nbsp; * Средняя (14 баллов)
+<i class="no-highlight">230</i>&nbsp; *
+<i class="no-highlight">231</i>&nbsp; * Во входном файле с именем inputName содержится некоторый текст (в том числе, и на русском языке).
+<i class="no-highlight">232</i>&nbsp; *
+<i class="no-highlight">233</i>&nbsp; * Вернуть ассоциативный массив, содержащий 20 наиболее часто встречающихся слов с их количеством.
+<i class="no-highlight">234</i>&nbsp; * Если в тексте менее 20 различных слов, вернуть все слова.
+<i class="no-highlight">235</i>&nbsp; * Вернуть ассоциативный массив с числом слов больше 20, если 20-е, 21-е, ..., последнее слова
+<i class="no-highlight">236</i>&nbsp; * имеют одинаковое количество вхождений (см. также тест файла input/onegin.txt).
+<i class="no-highlight">237</i>&nbsp; *
+<i class="no-highlight">238</i>&nbsp; * Словом считается непрерывная последовательность из букв (кириллических,
+<i class="no-highlight">239</i>&nbsp; * либо латинских, без знаков препинания и цифр).
+<i class="no-highlight">240</i>&nbsp; * Цифры, пробелы, знаки препинания считаются разделителями слов:
+<i class="no-highlight">241</i>&nbsp; * Привет, привет42, привет!!! -привет?!
+<i class="no-highlight">242</i>&nbsp; * ^ В этой строчке слово привет встречается 4 раза.
+<i class="no-highlight">243</i>&nbsp; *
+<i class="no-highlight">244</i>&nbsp; * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
+<i class="no-highlight">245</i>&nbsp; * Ключи в ассоциативном массиве должны быть в нижнем регистре.
+<i class="no-highlight">246</i>&nbsp; *
+<i class="no-highlight">247</i>&nbsp; */
+<b class="nc"><i class="no-highlight">248</i>&nbsp;fun top20Words(inputName: String): Map&lt;String, Int&gt; = TODO()</b>
+<i class="no-highlight">249</i>&nbsp;
+<i class="no-highlight">250</i>&nbsp;/**
+<i class="no-highlight">251</i>&nbsp; * Средняя (14 баллов)
+<i class="no-highlight">252</i>&nbsp; *
+<i class="no-highlight">253</i>&nbsp; * Реализовать транслитерацию текста из входного файла в выходной файл посредством динамически задаваемых правил.
+<i class="no-highlight">254</i>&nbsp;
+<i class="no-highlight">255</i>&nbsp; * Во входном файле с именем inputName содержится некоторый текст (в том числе, и на русском языке).
+<i class="no-highlight">256</i>&nbsp; *
+<i class="no-highlight">257</i>&nbsp; * В ассоциативном массиве dictionary содержится словарь, в котором некоторым символам
+<i class="no-highlight">258</i>&nbsp; * ставится в соответствие строчка из символов, например
+<i class="no-highlight">259</i>&nbsp; * mapOf(&#39;з&#39; to &quot;zz&quot;, &#39;р&#39; to &quot;r&quot;, &#39;д&#39; to &quot;d&quot;, &#39;й&#39; to &quot;y&quot;, &#39;М&#39; to &quot;m&quot;, &#39;и&#39; to &quot;yy&quot;, &#39;!&#39; to &quot;!!!&quot;)
+<i class="no-highlight">260</i>&nbsp; *
+<i class="no-highlight">261</i>&nbsp; * Необходимо вывести в итоговый файл с именем outputName
+<i class="no-highlight">262</i>&nbsp; * содержимое текста с заменой всех символов из словаря на соответствующие им строки.
+<i class="no-highlight">263</i>&nbsp; *
+<i class="no-highlight">264</i>&nbsp; * При этом регистр символов в словаре должен игнорироваться,
+<i class="no-highlight">265</i>&nbsp; * но при выводе символ в верхнем регистре отображается в строку, начинающуюся с символа в верхнем регистре.
+<i class="no-highlight">266</i>&nbsp; *
+<i class="no-highlight">267</i>&nbsp; * Пример.
+<i class="no-highlight">268</i>&nbsp; * Входной текст: Здравствуй, мир!
+<i class="no-highlight">269</i>&nbsp; *
+<i class="no-highlight">270</i>&nbsp; * заменяется на
+<i class="no-highlight">271</i>&nbsp; *
+<i class="no-highlight">272</i>&nbsp; * Выходной текст: Zzdrавствуy, mир!!!
+<i class="no-highlight">273</i>&nbsp; *
+<i class="no-highlight">274</i>&nbsp; * Пример 2.
+<i class="no-highlight">275</i>&nbsp; *
+<i class="no-highlight">276</i>&nbsp; * Входной текст: Здравствуй, мир!
+<i class="no-highlight">277</i>&nbsp; * Словарь: mapOf(&#39;з&#39; to &quot;zZ&quot;, &#39;р&#39; to &quot;r&quot;, &#39;д&#39; to &quot;d&quot;, &#39;й&#39; to &quot;y&quot;, &#39;М&#39; to &quot;m&quot;, &#39;и&#39; to &quot;YY&quot;, &#39;!&#39; to &quot;!!!&quot;)
+<i class="no-highlight">278</i>&nbsp; *
+<i class="no-highlight">279</i>&nbsp; * заменяется на
+<i class="no-highlight">280</i>&nbsp; *
+<i class="no-highlight">281</i>&nbsp; * Выходной текст: Zzdrавствуy, mир!!!
+<i class="no-highlight">282</i>&nbsp; *
+<i class="no-highlight">283</i>&nbsp; * Обратите внимание: данная функция не имеет возвращаемого значения
+<i class="no-highlight">284</i>&nbsp; */
+<i class="no-highlight">285</i>&nbsp;fun transliterate(inputName: String, dictionary: Map&lt;Char, String&gt;, outputName: String) {
+<b class="nc"><i class="no-highlight">286</i>&nbsp;    TODO()</b>
+<i class="no-highlight">287</i>&nbsp;}
+<i class="no-highlight">288</i>&nbsp;
+<i class="no-highlight">289</i>&nbsp;/**
+<i class="no-highlight">290</i>&nbsp; * Средняя (12 баллов)
+<i class="no-highlight">291</i>&nbsp; *
+<i class="no-highlight">292</i>&nbsp; * Во входном файле с именем inputName имеется словарь с одним словом в каждой строчке.
+<i class="no-highlight">293</i>&nbsp; * Выбрать из данного словаря наиболее длинное слово,
+<i class="no-highlight">294</i>&nbsp; * в котором все буквы разные, например: Неряшливость, Четырёхдюймовка.
+<i class="no-highlight">295</i>&nbsp; * Вывести его в выходной файл с именем outputName.
+<i class="no-highlight">296</i>&nbsp; * Если во входном файле имеется несколько слов с одинаковой длиной, в которых все буквы разные,
+<i class="no-highlight">297</i>&nbsp; * в выходной файл следует вывести их все через запятую.
+<i class="no-highlight">298</i>&nbsp; * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
+<i class="no-highlight">299</i>&nbsp; *
+<i class="no-highlight">300</i>&nbsp; * Пример входного файла:
+<i class="no-highlight">301</i>&nbsp; * Карминовый
+<i class="no-highlight">302</i>&nbsp; * Боязливый
+<i class="no-highlight">303</i>&nbsp; * Некрасивый
+<i class="no-highlight">304</i>&nbsp; * Остроумный
+<i class="no-highlight">305</i>&nbsp; * БелогЛазый
+<i class="no-highlight">306</i>&nbsp; * ФиолетОвый
+<i class="no-highlight">307</i>&nbsp;
+<i class="no-highlight">308</i>&nbsp; * Соответствующий выходной файл:
+<i class="no-highlight">309</i>&nbsp; * Карминовый, Некрасивый
+<i class="no-highlight">310</i>&nbsp; *
+<i class="no-highlight">311</i>&nbsp; * Обратите внимание: данная функция не имеет возвращаемого значения
+<i class="no-highlight">312</i>&nbsp; */
+<i class="no-highlight">313</i>&nbsp;fun chooseLongestChaoticWord(inputName: String, outputName: String) {
+<b class="nc"><i class="no-highlight">314</i>&nbsp;    TODO()</b>
+<i class="no-highlight">315</i>&nbsp;}
+<i class="no-highlight">316</i>&nbsp;
+<i class="no-highlight">317</i>&nbsp;/**
+<i class="no-highlight">318</i>&nbsp; * Сложная (22 балла)
+<i class="no-highlight">319</i>&nbsp; *
+<i class="no-highlight">320</i>&nbsp; * Реализовать транслитерацию текста в заданном формате разметки в формат разметки HTML.
+<i class="no-highlight">321</i>&nbsp; *
+<i class="no-highlight">322</i>&nbsp; * Во входном файле с именем inputName содержится текст, содержащий в себе элементы текстовой разметки следующих типов:
+<i class="no-highlight">323</i>&nbsp; * - *текст в курсивном начертании* -- курсив
+<i class="no-highlight">324</i>&nbsp; * - **текст в полужирном начертании** -- полужирный
+<i class="no-highlight">325</i>&nbsp; * - ~~зачёркнутый текст~~ -- зачёркивание
+<i class="no-highlight">326</i>&nbsp; *
+<i class="no-highlight">327</i>&nbsp; * Следует вывести в выходной файл этот же текст в формате HTML:
+<i class="no-highlight">328</i>&nbsp; * - &lt;i&gt;текст в курсивном начертании&lt;/i&gt;
+<i class="no-highlight">329</i>&nbsp; * - &lt;b&gt;текст в полужирном начертании&lt;/b&gt;
+<i class="no-highlight">330</i>&nbsp; * - &lt;s&gt;зачёркнутый текст&lt;/s&gt;
+<i class="no-highlight">331</i>&nbsp; *
+<i class="no-highlight">332</i>&nbsp; * Кроме того, все абзацы исходного текста, отделённые друг от друга пустыми строками, следует обернуть в теги &lt;p&gt;...&lt;/p&gt;,
+<i class="no-highlight">333</i>&nbsp; * а весь текст целиком в теги &lt;html&gt;&lt;body&gt;...&lt;/body&gt;&lt;/html&gt;.
+<i class="no-highlight">334</i>&nbsp; *
+<i class="no-highlight">335</i>&nbsp; * Все остальные части исходного текста должны остаться неизменными с точностью до наборов пробелов и переносов строк.
+<i class="no-highlight">336</i>&nbsp; * Отдельно следует заметить, что открывающая последовательность из трёх звёздочек (***) должна трактоваться как &quot;&lt;b&gt;&lt;i&gt;&quot;
+<i class="no-highlight">337</i>&nbsp; * и никак иначе.
+<i class="no-highlight">338</i>&nbsp; *
+<i class="no-highlight">339</i>&nbsp; * При решении этой и двух следующих задач полезно прочитать статью Википедии &quot;Стек&quot;.
+<i class="no-highlight">340</i>&nbsp; *
+<i class="no-highlight">341</i>&nbsp; * Пример входного файла:
+<i class="no-highlight">342</i>&nbsp;Lorem ipsum *dolor sit amet*, consectetur **adipiscing** elit.
+<i class="no-highlight">343</i>&nbsp;Vestibulum lobortis, ~~Est vehicula rutrum *suscipit*~~, ipsum ~~lib~~ero *placerat **tortor***,
+<i class="no-highlight">344</i>&nbsp;
+<i class="no-highlight">345</i>&nbsp;Suspendisse ~~et elit in enim tempus iaculis~~.
+<i class="no-highlight">346</i>&nbsp; *
+<i class="no-highlight">347</i>&nbsp; * Соответствующий выходной файл:
+<i class="no-highlight">348</i>&nbsp;&lt;html&gt;
+<i class="no-highlight">349</i>&nbsp;&lt;body&gt;
+<i class="no-highlight">350</i>&nbsp;&lt;p&gt;
+<i class="no-highlight">351</i>&nbsp;Lorem ipsum &lt;i&gt;dolor sit amet&lt;/i&gt;, consectetur &lt;b&gt;adipiscing&lt;/b&gt; elit.
+<i class="no-highlight">352</i>&nbsp;Vestibulum lobortis. &lt;s&gt;Est vehicula rutrum &lt;i&gt;suscipit&lt;/i&gt;&lt;/s&gt;, ipsum &lt;s&gt;lib&lt;/s&gt;ero &lt;i&gt;placerat &lt;b&gt;tortor&lt;/b&gt;&lt;/i&gt;.
+<i class="no-highlight">353</i>&nbsp;&lt;/p&gt;
+<i class="no-highlight">354</i>&nbsp;&lt;p&gt;
+<i class="no-highlight">355</i>&nbsp;Suspendisse &lt;s&gt;et elit in enim tempus iaculis&lt;/s&gt;.
+<i class="no-highlight">356</i>&nbsp;&lt;/p&gt;
+<i class="no-highlight">357</i>&nbsp;&lt;/body&gt;
+<i class="no-highlight">358</i>&nbsp;&lt;/html&gt;
+<i class="no-highlight">359</i>&nbsp; *
+<i class="no-highlight">360</i>&nbsp; * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
+<i class="no-highlight">361</i>&nbsp; */
+<i class="no-highlight">362</i>&nbsp;
+<i class="no-highlight">363</i>&nbsp;fun markdownToHtmlSimple(inputName: String, outputName: String) {
+<b class="nc"><i class="no-highlight">364</i>&nbsp;    TODO()</b>
+<i class="no-highlight">365</i>&nbsp;}
+<i class="no-highlight">366</i>&nbsp;
+<i class="no-highlight">367</i>&nbsp;/**
+<i class="no-highlight">368</i>&nbsp; * Сложная (23 балла)
+<i class="no-highlight">369</i>&nbsp; *
+<i class="no-highlight">370</i>&nbsp; * Реализовать транслитерацию текста в заданном формате разметки в формат разметки HTML.
+<i class="no-highlight">371</i>&nbsp; *
+<i class="no-highlight">372</i>&nbsp; * Во входном файле с именем inputName содержится текст, содержащий в себе набор вложенных друг в друга списков.
+<i class="no-highlight">373</i>&nbsp; * Списки бывают двух типов: нумерованные и ненумерованные.
+<i class="no-highlight">374</i>&nbsp; *
+<i class="no-highlight">375</i>&nbsp; * Каждый элемент ненумерованного списка начинается с новой строки и символа &#39;*&#39;, каждый элемент нумерованного списка --
+<i class="no-highlight">376</i>&nbsp; * с новой строки, числа и точки. Каждый элемент вложенного списка начинается с отступа из пробелов, на 4 пробела большего,
+<i class="no-highlight">377</i>&nbsp; * чем список-родитель. Максимально глубина вложенности списков может достигать 6. &quot;Верхние&quot; списки файла начинются
+<i class="no-highlight">378</i>&nbsp; * прямо с начала строки.
+<i class="no-highlight">379</i>&nbsp; *
+<i class="no-highlight">380</i>&nbsp; * Следует вывести этот же текст в выходной файл в формате HTML:
+<i class="no-highlight">381</i>&nbsp; * Нумерованный список:
+<i class="no-highlight">382</i>&nbsp; * &lt;ol&gt;
+<i class="no-highlight">383</i>&nbsp; *     &lt;li&gt;Раз&lt;/li&gt;
+<i class="no-highlight">384</i>&nbsp; *     &lt;li&gt;Два&lt;/li&gt;
+<i class="no-highlight">385</i>&nbsp; *     &lt;li&gt;Три&lt;/li&gt;
+<i class="no-highlight">386</i>&nbsp; * &lt;/ol&gt;
+<i class="no-highlight">387</i>&nbsp; *
+<i class="no-highlight">388</i>&nbsp; * Ненумерованный список:
+<i class="no-highlight">389</i>&nbsp; * &lt;ul&gt;
+<i class="no-highlight">390</i>&nbsp; *     &lt;li&gt;Раз&lt;/li&gt;
+<i class="no-highlight">391</i>&nbsp; *     &lt;li&gt;Два&lt;/li&gt;
+<i class="no-highlight">392</i>&nbsp; *     &lt;li&gt;Три&lt;/li&gt;
+<i class="no-highlight">393</i>&nbsp; * &lt;/ul&gt;
+<i class="no-highlight">394</i>&nbsp; *
+<i class="no-highlight">395</i>&nbsp; * Кроме того, весь текст целиком следует обернуть в теги &lt;html&gt;&lt;body&gt;&lt;p&gt;...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+<i class="no-highlight">396</i>&nbsp; *
+<i class="no-highlight">397</i>&nbsp; * Все остальные части исходного текста должны остаться неизменными с точностью до наборов пробелов и переносов строк.
+<i class="no-highlight">398</i>&nbsp; *
+<i class="no-highlight">399</i>&nbsp; * Пример входного файла:
+<i class="no-highlight">400</i>&nbsp;///////////////////////////////начало файла/////////////////////////////////////////////////////////////////////////////
+<i class="no-highlight">401</i>&nbsp; * Утка по-пекински
+<i class="no-highlight">402</i>&nbsp; * Утка
+<i class="no-highlight">403</i>&nbsp; * Соус
+<i class="no-highlight">404</i>&nbsp; * Салат Оливье
+<i class="no-highlight">405</i>&nbsp;1. Мясо
+<i class="no-highlight">406</i>&nbsp; * Или колбаса
+<i class="no-highlight">407</i>&nbsp;2. Майонез
+<i class="no-highlight">408</i>&nbsp;3. Картофель
+<i class="no-highlight">409</i>&nbsp;4. Что-то там ещё
+<i class="no-highlight">410</i>&nbsp; * Помидоры
+<i class="no-highlight">411</i>&nbsp; * Фрукты
+<i class="no-highlight">412</i>&nbsp;1. Бананы
+<i class="no-highlight">413</i>&nbsp;23. Яблоки
+<i class="no-highlight">414</i>&nbsp;1. Красные
+<i class="no-highlight">415</i>&nbsp;2. Зелёные
+<i class="no-highlight">416</i>&nbsp;///////////////////////////////конец файла//////////////////////////////////////////////////////////////////////////////
+<i class="no-highlight">417</i>&nbsp; *
+<i class="no-highlight">418</i>&nbsp; *
+<i class="no-highlight">419</i>&nbsp; * Соответствующий выходной файл:
+<i class="no-highlight">420</i>&nbsp;///////////////////////////////начало файла/////////////////////////////////////////////////////////////////////////////
+<i class="no-highlight">421</i>&nbsp;&lt;html&gt;
+<i class="no-highlight">422</i>&nbsp;&lt;body&gt;
+<i class="no-highlight">423</i>&nbsp;&lt;p&gt;
+<i class="no-highlight">424</i>&nbsp;&lt;ul&gt;
+<i class="no-highlight">425</i>&nbsp;&lt;li&gt;
+<i class="no-highlight">426</i>&nbsp;Утка по-пекински
+<i class="no-highlight">427</i>&nbsp;&lt;ul&gt;
+<i class="no-highlight">428</i>&nbsp;&lt;li&gt;Утка&lt;/li&gt;
+<i class="no-highlight">429</i>&nbsp;&lt;li&gt;Соус&lt;/li&gt;
+<i class="no-highlight">430</i>&nbsp;&lt;/ul&gt;
+<i class="no-highlight">431</i>&nbsp;&lt;/li&gt;
+<i class="no-highlight">432</i>&nbsp;&lt;li&gt;
+<i class="no-highlight">433</i>&nbsp;Салат Оливье
+<i class="no-highlight">434</i>&nbsp;&lt;ol&gt;
+<i class="no-highlight">435</i>&nbsp;&lt;li&gt;Мясо
+<i class="no-highlight">436</i>&nbsp;&lt;ul&gt;
+<i class="no-highlight">437</i>&nbsp;&lt;li&gt;Или колбаса&lt;/li&gt;
+<i class="no-highlight">438</i>&nbsp;&lt;/ul&gt;
+<i class="no-highlight">439</i>&nbsp;&lt;/li&gt;
+<i class="no-highlight">440</i>&nbsp;&lt;li&gt;Майонез&lt;/li&gt;
+<i class="no-highlight">441</i>&nbsp;&lt;li&gt;Картофель&lt;/li&gt;
+<i class="no-highlight">442</i>&nbsp;&lt;li&gt;Что-то там ещё&lt;/li&gt;
+<i class="no-highlight">443</i>&nbsp;&lt;/ol&gt;
+<i class="no-highlight">444</i>&nbsp;&lt;/li&gt;
+<i class="no-highlight">445</i>&nbsp;&lt;li&gt;Помидоры&lt;/li&gt;
+<i class="no-highlight">446</i>&nbsp;&lt;li&gt;Фрукты
+<i class="no-highlight">447</i>&nbsp;&lt;ol&gt;
+<i class="no-highlight">448</i>&nbsp;&lt;li&gt;Бананы&lt;/li&gt;
+<i class="no-highlight">449</i>&nbsp;&lt;li&gt;Яблоки
+<i class="no-highlight">450</i>&nbsp;&lt;ol&gt;
+<i class="no-highlight">451</i>&nbsp;&lt;li&gt;Красные&lt;/li&gt;
+<i class="no-highlight">452</i>&nbsp;&lt;li&gt;Зелёные&lt;/li&gt;
+<i class="no-highlight">453</i>&nbsp;&lt;/ol&gt;
+<i class="no-highlight">454</i>&nbsp;&lt;/li&gt;
+<i class="no-highlight">455</i>&nbsp;&lt;/ol&gt;
+<i class="no-highlight">456</i>&nbsp;&lt;/li&gt;
+<i class="no-highlight">457</i>&nbsp;&lt;/ul&gt;
+<i class="no-highlight">458</i>&nbsp;&lt;/p&gt;
+<i class="no-highlight">459</i>&nbsp;&lt;/body&gt;
+<i class="no-highlight">460</i>&nbsp;&lt;/html&gt;
+<i class="no-highlight">461</i>&nbsp;///////////////////////////////конец файла//////////////////////////////////////////////////////////////////////////////
+<i class="no-highlight">462</i>&nbsp; * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
+<i class="no-highlight">463</i>&nbsp; */
+<i class="no-highlight">464</i>&nbsp;fun markdownToHtmlLists(inputName: String, outputName: String) {
+<b class="nc"><i class="no-highlight">465</i>&nbsp;    TODO()</b>
+<i class="no-highlight">466</i>&nbsp;}
+<i class="no-highlight">467</i>&nbsp;
+<i class="no-highlight">468</i>&nbsp;/**
+<i class="no-highlight">469</i>&nbsp; * Очень сложная (30 баллов)
+<i class="no-highlight">470</i>&nbsp; *
+<i class="no-highlight">471</i>&nbsp; * Реализовать преобразования из двух предыдущих задач одновременно над одним и тем же файлом.
+<i class="no-highlight">472</i>&nbsp; * Следует помнить, что:
+<i class="no-highlight">473</i>&nbsp; * - Списки, отделённые друг от друга пустой строкой, являются разными и должны оказаться в разных параграфах выходного файла.
+<i class="no-highlight">474</i>&nbsp; *
+<i class="no-highlight">475</i>&nbsp; */
+<i class="no-highlight">476</i>&nbsp;fun markdownToHtml(inputName: String, outputName: String) {
+<b class="nc"><i class="no-highlight">477</i>&nbsp;    TODO()</b>
+<i class="no-highlight">478</i>&nbsp;}
+<i class="no-highlight">479</i>&nbsp;
+<i class="no-highlight">480</i>&nbsp;/**
+<i class="no-highlight">481</i>&nbsp; * Средняя (12 баллов)
+<i class="no-highlight">482</i>&nbsp; *
+<i class="no-highlight">483</i>&nbsp; * Вывести в выходной файл процесс умножения столбиком числа lhv (&gt; 0) на число rhv (&gt; 0).
+<i class="no-highlight">484</i>&nbsp; *
+<i class="no-highlight">485</i>&nbsp; * Пример (для lhv == 19935, rhv == 111):
+<i class="no-highlight">486</i>&nbsp;19935
+<i class="no-highlight">487</i>&nbsp; *    111
+<i class="no-highlight">488</i>&nbsp;--------
+<i class="no-highlight">489</i>&nbsp;19935
+<i class="no-highlight">490</i>&nbsp;+ 19935
+<i class="no-highlight">491</i>&nbsp;+19935
+<i class="no-highlight">492</i>&nbsp;--------
+<i class="no-highlight">493</i>&nbsp;2212785
+<i class="no-highlight">494</i>&nbsp; * Используемые пробелы, отступы и дефисы должны в точности соответствовать примеру.
+<i class="no-highlight">495</i>&nbsp; * Нули в множителе обрабатывать так же, как и остальные цифры:
+<i class="no-highlight">496</i>&nbsp;235
+<i class="no-highlight">497</i>&nbsp; *  10
+<i class="no-highlight">498</i>&nbsp;-----
+<i class="no-highlight">499</i>&nbsp;0
+<i class="no-highlight">500</i>&nbsp;+235
+<i class="no-highlight">501</i>&nbsp;-----
+<i class="no-highlight">502</i>&nbsp;2350
+<i class="no-highlight">503</i>&nbsp; *
+<i class="no-highlight">504</i>&nbsp; */
+<i class="no-highlight">505</i>&nbsp;fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
+<b class="nc"><i class="no-highlight">506</i>&nbsp;    TODO()</b>
+<i class="no-highlight">507</i>&nbsp;}
+<i class="no-highlight">508</i>&nbsp;
+<i class="no-highlight">509</i>&nbsp;
+<i class="no-highlight">510</i>&nbsp;/**
+<i class="no-highlight">511</i>&nbsp; * Сложная (25 баллов)
+<i class="no-highlight">512</i>&nbsp; *
+<i class="no-highlight">513</i>&nbsp; * Вывести в выходной файл процесс деления столбиком числа lhv (&gt; 0) на число rhv (&gt; 0).
+<i class="no-highlight">514</i>&nbsp; *
+<i class="no-highlight">515</i>&nbsp; * Пример (для lhv == 19935, rhv == 22):
+<i class="no-highlight">516</i>&nbsp;19935 | 22
+<i class="no-highlight">517</i>&nbsp;-198     906
+<i class="no-highlight">518</i>&nbsp;----
+<i class="no-highlight">519</i>&nbsp;13
+<i class="no-highlight">520</i>&nbsp;-0
+<i class="no-highlight">521</i>&nbsp;--
+<i class="no-highlight">522</i>&nbsp;135
+<i class="no-highlight">523</i>&nbsp;-132
+<i class="no-highlight">524</i>&nbsp;----
+<i class="no-highlight">525</i>&nbsp;3
+<i class="no-highlight">526</i>&nbsp;
+<i class="no-highlight">527</i>&nbsp; * Используемые пробелы, отступы и дефисы должны в точности соответствовать примеру.
+<i class="no-highlight">528</i>&nbsp; *
+<i class="no-highlight">529</i>&nbsp; */
+<i class="no-highlight">530</i>&nbsp;fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
+<b class="nc"><i class="no-highlight">531</i>&nbsp;    TODO()</b>
+<i class="no-highlight">532</i>&nbsp;}
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-03-27 14:22</div>
+</div>
+</body>
+</html>

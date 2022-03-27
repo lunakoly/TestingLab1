@@ -1,0 +1,482 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > MapKt</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/highlight-idea.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">lesson5.task1</a>
+</div>
+
+<h1>Coverage Summary for Class: MapKt (lesson5.task1)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Block, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">MapKt</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    5.9%
+  </span>
+  <span class="absValue">
+    (1/17)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    9.6%
+  </span>
+  <span class="absValue">
+    (7/73)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<div class="sourceCode" id="sourceCode"><i class="no-highlight">1</i>&nbsp;@file:Suppress(&quot;UNUSED_PARAMETER&quot;, &quot;ConvertCallChainIntoSequence&quot;)
+<i class="no-highlight">2</i>&nbsp;
+<i class="no-highlight">3</i>&nbsp;package lesson5.task1
+<i class="no-highlight">4</i>&nbsp;
+<i class="no-highlight">5</i>&nbsp;import kotlin.math.max
+<i class="no-highlight">6</i>&nbsp;
+<i class="no-highlight">7</i>&nbsp;// Урок 5: ассоциативные массивы и множества
+<i class="no-highlight">8</i>&nbsp;// Максимальное количество баллов = 14
+<i class="no-highlight">9</i>&nbsp;// Рекомендуемое количество баллов = 9
+<i class="no-highlight">10</i>&nbsp;// Вместе с предыдущими уроками = 33/47
+<i class="no-highlight">11</i>&nbsp;
+<i class="no-highlight">12</i>&nbsp;/**
+<i class="no-highlight">13</i>&nbsp; * Пример
+<i class="no-highlight">14</i>&nbsp; *
+<i class="no-highlight">15</i>&nbsp; * Для заданного списка покупок `shoppingList` посчитать его общую стоимость
+<i class="no-highlight">16</i>&nbsp; * на основе цен из `costs`. В случае неизвестной цены считать, что товар
+<i class="no-highlight">17</i>&nbsp; * игнорируется.
+<i class="no-highlight">18</i>&nbsp; */
+<i class="no-highlight">19</i>&nbsp;
+<i class="no-highlight">20</i>&nbsp;fun shoppingListCost(
+<i class="no-highlight">21</i>&nbsp;    shoppingList: List&lt;String&gt;,
+<i class="no-highlight">22</i>&nbsp;    costs: Map&lt;String, Double&gt;
+<i class="no-highlight">23</i>&nbsp;): Double {
+<b class="nc"><i class="no-highlight">24</i>&nbsp;    var totalCost = 0.0</b>
+<i class="no-highlight">25</i>&nbsp;
+<b class="nc"><i class="no-highlight">26</i>&nbsp;    for (item in shoppingList) {</b>
+<b class="nc"><i class="no-highlight">27</i>&nbsp;        val itemCost = costs[item]</b>
+<b class="nc"><i class="no-highlight">28</i>&nbsp;        if (itemCost != null) {</b>
+<b class="nc"><i class="no-highlight">29</i>&nbsp;            totalCost += itemCost</b>
+<i class="no-highlight">30</i>&nbsp;        }
+<i class="no-highlight">31</i>&nbsp;    }
+<i class="no-highlight">32</i>&nbsp;
+<b class="nc"><i class="no-highlight">33</i>&nbsp;    return totalCost</b>
+<i class="no-highlight">34</i>&nbsp;}
+<i class="no-highlight">35</i>&nbsp;
+<i class="no-highlight">36</i>&nbsp;/**
+<i class="no-highlight">37</i>&nbsp; * Пример
+<i class="no-highlight">38</i>&nbsp; *
+<i class="no-highlight">39</i>&nbsp; * Для набора &quot;имя&quot;-&quot;номер телефона&quot; `phoneBook` оставить только такие пары,
+<i class="no-highlight">40</i>&nbsp; * для которых телефон начинается с заданного кода страны `countryCode`
+<i class="no-highlight">41</i>&nbsp; */
+<i class="no-highlight">42</i>&nbsp;fun filterByCountryCode(
+<i class="no-highlight">43</i>&nbsp;    phoneBook: MutableMap&lt;String, String&gt;,
+<i class="no-highlight">44</i>&nbsp;    countryCode: String
+<i class="no-highlight">45</i>&nbsp;) {
+<b class="nc"><i class="no-highlight">46</i>&nbsp;    val namesToRemove = mutableListOf&lt;String&gt;()</b>
+<i class="no-highlight">47</i>&nbsp;
+<b class="nc"><i class="no-highlight">48</i>&nbsp;    for ((name, phone) in phoneBook) {</b>
+<b class="nc"><i class="no-highlight">49</i>&nbsp;        if (!phone.startsWith(countryCode)) {</b>
+<b class="nc"><i class="no-highlight">50</i>&nbsp;            namesToRemove.add(name)</b>
+<i class="no-highlight">51</i>&nbsp;        }
+<i class="no-highlight">52</i>&nbsp;    }
+<i class="no-highlight">53</i>&nbsp;
+<b class="nc"><i class="no-highlight">54</i>&nbsp;    for (name in namesToRemove) {</b>
+<b class="nc"><i class="no-highlight">55</i>&nbsp;        phoneBook.remove(name)</b>
+<i class="no-highlight">56</i>&nbsp;    }
+<i class="no-highlight">57</i>&nbsp;}
+<i class="no-highlight">58</i>&nbsp;
+<i class="no-highlight">59</i>&nbsp;/**
+<i class="no-highlight">60</i>&nbsp; * Пример
+<i class="no-highlight">61</i>&nbsp; *
+<i class="no-highlight">62</i>&nbsp; * Для заданного текста `text` убрать заданные слова-паразиты `fillerWords`
+<i class="no-highlight">63</i>&nbsp; * и вернуть отфильтрованный текст
+<i class="no-highlight">64</i>&nbsp; */
+<i class="no-highlight">65</i>&nbsp;fun removeFillerWords(
+<i class="no-highlight">66</i>&nbsp;    text: List&lt;String&gt;,
+<i class="no-highlight">67</i>&nbsp;    vararg fillerWords: String
+<i class="no-highlight">68</i>&nbsp;): List&lt;String&gt; {
+<b class="nc"><i class="no-highlight">69</i>&nbsp;    val fillerWordSet = setOf(*fillerWords)</b>
+<i class="no-highlight">70</i>&nbsp;
+<b class="nc"><i class="no-highlight">71</i>&nbsp;    val res = mutableListOf&lt;String&gt;()</b>
+<b class="nc"><i class="no-highlight">72</i>&nbsp;    for (word in text) {</b>
+<b class="nc"><i class="no-highlight">73</i>&nbsp;        if (word !in fillerWordSet) {</b>
+<b class="nc"><i class="no-highlight">74</i>&nbsp;            res += word</b>
+<i class="no-highlight">75</i>&nbsp;        }
+<i class="no-highlight">76</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">77</i>&nbsp;    return res</b>
+<i class="no-highlight">78</i>&nbsp;}
+<i class="no-highlight">79</i>&nbsp;
+<i class="no-highlight">80</i>&nbsp;/**
+<i class="no-highlight">81</i>&nbsp; * Пример
+<i class="no-highlight">82</i>&nbsp; *
+<i class="no-highlight">83</i>&nbsp; * Для заданного текста `text` построить множество встречающихся в нем слов
+<i class="no-highlight">84</i>&nbsp; */
+<i class="no-highlight">85</i>&nbsp;fun buildWordSet(text: List&lt;String&gt;): MutableSet&lt;String&gt; {
+<b class="nc"><i class="no-highlight">86</i>&nbsp;    val res = mutableSetOf&lt;String&gt;()</b>
+<b class="nc"><i class="no-highlight">87</i>&nbsp;    for (word in text) res.add(word)</b>
+<b class="nc"><i class="no-highlight">88</i>&nbsp;    return res</b>
+<i class="no-highlight">89</i>&nbsp;}
+<i class="no-highlight">90</i>&nbsp;
+<i class="no-highlight">91</i>&nbsp;
+<i class="no-highlight">92</i>&nbsp;/**
+<i class="no-highlight">93</i>&nbsp; * Простая (2 балла)
+<i class="no-highlight">94</i>&nbsp; *
+<i class="no-highlight">95</i>&nbsp; * По заданному ассоциативному массиву &quot;студент&quot;-&quot;оценка за экзамен&quot; построить
+<i class="no-highlight">96</i>&nbsp; * обратный массив &quot;оценка за экзамен&quot;-&quot;список студентов с этой оценкой&quot;.
+<i class="no-highlight">97</i>&nbsp; *
+<i class="no-highlight">98</i>&nbsp; * Например:
+<i class="no-highlight">99</i>&nbsp; *   buildGrades(mapOf(&quot;Марат&quot; to 3, &quot;Семён&quot; to 5, &quot;Михаил&quot; to 5))
+<i class="no-highlight">100</i>&nbsp; *     -&gt; mapOf(5 to listOf(&quot;Семён&quot;, &quot;Михаил&quot;), 3 to listOf(&quot;Марат&quot;))
+<i class="no-highlight">101</i>&nbsp; */
+<b class="nc"><i class="no-highlight">102</i>&nbsp;fun buildGrades(grades: Map&lt;String, Int&gt;): Map&lt;Int, List&lt;String&gt;&gt; = TODO()</b>
+<i class="no-highlight">103</i>&nbsp;
+<i class="no-highlight">104</i>&nbsp;/**
+<i class="no-highlight">105</i>&nbsp; * Простая (2 балла)
+<i class="no-highlight">106</i>&nbsp; *
+<i class="no-highlight">107</i>&nbsp; * Определить, входит ли ассоциативный массив a в ассоциативный массив b;
+<i class="no-highlight">108</i>&nbsp; * это выполняется, если все ключи из a содержатся в b с такими же значениями.
+<i class="no-highlight">109</i>&nbsp; *
+<i class="no-highlight">110</i>&nbsp; * Например:
+<i class="no-highlight">111</i>&nbsp; *   containsIn(mapOf(&quot;a&quot; to &quot;z&quot;), mapOf(&quot;a&quot; to &quot;z&quot;, &quot;b&quot; to &quot;sweet&quot;)) -&gt; true
+<i class="no-highlight">112</i>&nbsp; *   containsIn(mapOf(&quot;a&quot; to &quot;z&quot;), mapOf(&quot;a&quot; to &quot;zee&quot;, &quot;b&quot; to &quot;sweet&quot;)) -&gt; false
+<i class="no-highlight">113</i>&nbsp; */
+<b class="nc"><i class="no-highlight">114</i>&nbsp;fun containsIn(a: Map&lt;String, String&gt;, b: Map&lt;String, String&gt;): Boolean = TODO()</b>
+<i class="no-highlight">115</i>&nbsp;
+<i class="no-highlight">116</i>&nbsp;/**
+<i class="no-highlight">117</i>&nbsp; * Простая (2 балла)
+<i class="no-highlight">118</i>&nbsp; *
+<i class="no-highlight">119</i>&nbsp; * Удалить из изменяемого ассоциативного массива все записи,
+<i class="no-highlight">120</i>&nbsp; * которые встречаются в заданном ассоциативном массиве.
+<i class="no-highlight">121</i>&nbsp; * Записи считать одинаковыми, если и ключи, и значения совпадают.
+<i class="no-highlight">122</i>&nbsp; *
+<i class="no-highlight">123</i>&nbsp; * ВАЖНО: необходимо изменить переданный в качестве аргумента
+<i class="no-highlight">124</i>&nbsp; *        изменяемый ассоциативный массив
+<i class="no-highlight">125</i>&nbsp; *
+<i class="no-highlight">126</i>&nbsp; * Например:
+<i class="no-highlight">127</i>&nbsp; *   subtractOf(a = mutableMapOf(&quot;a&quot; to &quot;z&quot;), mapOf(&quot;a&quot; to &quot;z&quot;))
+<i class="no-highlight">128</i>&nbsp; *     -&gt; a changes to mutableMapOf() aka becomes empty
+<i class="no-highlight">129</i>&nbsp; */
+<i class="no-highlight">130</i>&nbsp;fun subtractOf(a: MutableMap&lt;String, String&gt;, b: Map&lt;String, String&gt;) {
+<b class="nc"><i class="no-highlight">131</i>&nbsp;    TODO()</b>
+<i class="no-highlight">132</i>&nbsp;}
+<i class="no-highlight">133</i>&nbsp;
+<i class="no-highlight">134</i>&nbsp;/**
+<i class="no-highlight">135</i>&nbsp; * Простая (2 балла)
+<i class="no-highlight">136</i>&nbsp; *
+<i class="no-highlight">137</i>&nbsp; * Для двух списков людей найти людей, встречающихся в обоих списках.
+<i class="no-highlight">138</i>&nbsp; * В выходном списке не должно быть повторяющихся элементов,
+<i class="no-highlight">139</i>&nbsp; * т. е. whoAreInBoth(listOf(&quot;Марат&quot;, &quot;Семён, &quot;Марат&quot;), listOf(&quot;Марат&quot;, &quot;Марат&quot;)) == listOf(&quot;Марат&quot;)
+<i class="no-highlight">140</i>&nbsp; */
+<b class="nc"><i class="no-highlight">141</i>&nbsp;fun whoAreInBoth(a: List&lt;String&gt;, b: List&lt;String&gt;): List&lt;String&gt; = TODO()</b>
+<i class="no-highlight">142</i>&nbsp;
+<i class="no-highlight">143</i>&nbsp;/**
+<i class="no-highlight">144</i>&nbsp; * Средняя (3 балла)
+<i class="no-highlight">145</i>&nbsp; *
+<i class="no-highlight">146</i>&nbsp; * Объединить два ассоциативных массива `mapA` и `mapB` с парами
+<i class="no-highlight">147</i>&nbsp; * &quot;имя&quot;-&quot;номер телефона&quot; в итоговый ассоциативный массив, склеивая
+<i class="no-highlight">148</i>&nbsp; * значения для повторяющихся ключей через запятую.
+<i class="no-highlight">149</i>&nbsp; * В случае повторяющихся *ключей* значение из mapA должно быть
+<i class="no-highlight">150</i>&nbsp; * перед значением из mapB.
+<i class="no-highlight">151</i>&nbsp; *
+<i class="no-highlight">152</i>&nbsp; * Повторяющиеся *значения* следует добавлять только один раз.
+<i class="no-highlight">153</i>&nbsp; *
+<i class="no-highlight">154</i>&nbsp; * Например:
+<i class="no-highlight">155</i>&nbsp; *   mergePhoneBooks(
+<i class="no-highlight">156</i>&nbsp; *     mapOf(&quot;Emergency&quot; to &quot;112&quot;, &quot;Police&quot; to &quot;02&quot;),
+<i class="no-highlight">157</i>&nbsp; *     mapOf(&quot;Emergency&quot; to &quot;911&quot;, &quot;Police&quot; to &quot;02&quot;)
+<i class="no-highlight">158</i>&nbsp; *   ) -&gt; mapOf(&quot;Emergency&quot; to &quot;112, 911&quot;, &quot;Police&quot; to &quot;02&quot;)
+<i class="no-highlight">159</i>&nbsp; */
+<b class="nc"><i class="no-highlight">160</i>&nbsp;fun mergePhoneBooks(mapA: Map&lt;String, String&gt;, mapB: Map&lt;String, String&gt;): Map&lt;String, String&gt; = TODO()</b>
+<i class="no-highlight">161</i>&nbsp;
+<i class="no-highlight">162</i>&nbsp;/**
+<i class="no-highlight">163</i>&nbsp; * Средняя (4 балла)
+<i class="no-highlight">164</i>&nbsp; *
+<i class="no-highlight">165</i>&nbsp; * Для заданного списка пар &quot;акция&quot;-&quot;стоимость&quot; вернуть ассоциативный массив,
+<i class="no-highlight">166</i>&nbsp; * содержащий для каждой акции ее усредненную стоимость.
+<i class="no-highlight">167</i>&nbsp; *
+<i class="no-highlight">168</i>&nbsp; * Например:
+<i class="no-highlight">169</i>&nbsp; *   averageStockPrice(listOf(&quot;MSFT&quot; to 100.0, &quot;MSFT&quot; to 200.0, &quot;NFLX&quot; to 40.0))
+<i class="no-highlight">170</i>&nbsp; *     -&gt; mapOf(&quot;MSFT&quot; to 150.0, &quot;NFLX&quot; to 40.0)
+<i class="no-highlight">171</i>&nbsp; */
+<b class="nc"><i class="no-highlight">172</i>&nbsp;fun averageStockPrice(stockPrices: List&lt;Pair&lt;String, Double&gt;&gt;): Map&lt;String, Double&gt; = TODO()</b>
+<i class="no-highlight">173</i>&nbsp;
+<i class="no-highlight">174</i>&nbsp;/**
+<i class="no-highlight">175</i>&nbsp; * Средняя (4 балла)
+<i class="no-highlight">176</i>&nbsp; *
+<i class="no-highlight">177</i>&nbsp; * Входными данными является ассоциативный массив
+<i class="no-highlight">178</i>&nbsp; * &quot;название товара&quot;-&quot;пара (тип товара, цена товара)&quot;
+<i class="no-highlight">179</i>&nbsp; * и тип интересующего нас товара.
+<i class="no-highlight">180</i>&nbsp; * Необходимо вернуть название товара заданного типа с минимальной стоимостью
+<i class="no-highlight">181</i>&nbsp; * или null в случае, если товаров такого типа нет.
+<i class="no-highlight">182</i>&nbsp; *
+<i class="no-highlight">183</i>&nbsp; * Например:
+<i class="no-highlight">184</i>&nbsp; *   findCheapestStuff(
+<i class="no-highlight">185</i>&nbsp; *     mapOf(&quot;Мария&quot; to (&quot;печенье&quot; to 20.0), &quot;Орео&quot; to (&quot;печенье&quot; to 100.0)),
+<i class="no-highlight">186</i>&nbsp; *     &quot;печенье&quot;
+<i class="no-highlight">187</i>&nbsp; *   ) -&gt; &quot;Мария&quot;
+<i class="no-highlight">188</i>&nbsp; */
+<b class="nc"><i class="no-highlight">189</i>&nbsp;fun findCheapestStuff(stuff: Map&lt;String, Pair&lt;String, Double&gt;&gt;, kind: String): String? = TODO()</b>
+<i class="no-highlight">190</i>&nbsp;
+<i class="no-highlight">191</i>&nbsp;/**
+<i class="no-highlight">192</i>&nbsp; * Средняя (3 балла)
+<i class="no-highlight">193</i>&nbsp; *
+<i class="no-highlight">194</i>&nbsp; * Для заданного набора символов определить, можно ли составить из него
+<i class="no-highlight">195</i>&nbsp; * указанное слово (регистр символов игнорируется)
+<i class="no-highlight">196</i>&nbsp; *
+<i class="no-highlight">197</i>&nbsp; * Например:
+<i class="no-highlight">198</i>&nbsp; *   canBuildFrom(listOf(&#39;a&#39;, &#39;b&#39;, &#39;o&#39;), &quot;baobab&quot;) -&gt; true
+<i class="no-highlight">199</i>&nbsp; */
+<b class="nc"><i class="no-highlight">200</i>&nbsp;fun canBuildFrom(chars: List&lt;Char&gt;, word: String): Boolean = TODO()</b>
+<i class="no-highlight">201</i>&nbsp;
+<i class="no-highlight">202</i>&nbsp;/**
+<i class="no-highlight">203</i>&nbsp; * Средняя (4 балла)
+<i class="no-highlight">204</i>&nbsp; *
+<i class="no-highlight">205</i>&nbsp; * Найти в заданном списке повторяющиеся элементы и вернуть
+<i class="no-highlight">206</i>&nbsp; * ассоциативный массив с информацией о числе повторений
+<i class="no-highlight">207</i>&nbsp; * для каждого повторяющегося элемента.
+<i class="no-highlight">208</i>&nbsp; * Если элемент встречается только один раз, включать его в результат
+<i class="no-highlight">209</i>&nbsp; * не следует.
+<i class="no-highlight">210</i>&nbsp; *
+<i class="no-highlight">211</i>&nbsp; * Например:
+<i class="no-highlight">212</i>&nbsp; *   extractRepeats(listOf(&quot;a&quot;, &quot;b&quot;, &quot;a&quot;)) -&gt; mapOf(&quot;a&quot; to 2)
+<i class="no-highlight">213</i>&nbsp; */
+<b class="nc"><i class="no-highlight">214</i>&nbsp;fun extractRepeats(list: List&lt;String&gt;): Map&lt;String, Int&gt; = TODO()</b>
+<i class="no-highlight">215</i>&nbsp;
+<i class="no-highlight">216</i>&nbsp;/**
+<i class="no-highlight">217</i>&nbsp; * Средняя (3 балла)
+<i class="no-highlight">218</i>&nbsp; *
+<i class="no-highlight">219</i>&nbsp; * Для заданного списка слов определить, содержит ли он анаграммы.
+<i class="no-highlight">220</i>&nbsp; * Два слова здесь считаются анаграммами, если они имеют одинаковую длину
+<i class="no-highlight">221</i>&nbsp; * и одно можно составить из второго перестановкой его букв.
+<i class="no-highlight">222</i>&nbsp; * Скажем, тор и рот или роза и азор это анаграммы,
+<i class="no-highlight">223</i>&nbsp; * а поле и полено -- нет.
+<i class="no-highlight">224</i>&nbsp; *
+<i class="no-highlight">225</i>&nbsp; * Например:
+<i class="no-highlight">226</i>&nbsp; *   hasAnagrams(listOf(&quot;тор&quot;, &quot;свет&quot;, &quot;рот&quot;)) -&gt; true
+<i class="no-highlight">227</i>&nbsp; */
+<b class="nc"><i class="no-highlight">228</i>&nbsp;fun hasAnagrams(words: List&lt;String&gt;): Boolean = TODO()</b>
+<i class="no-highlight">229</i>&nbsp;
+<i class="no-highlight">230</i>&nbsp;/**
+<i class="no-highlight">231</i>&nbsp; * Сложная (5 баллов)
+<i class="no-highlight">232</i>&nbsp; *
+<i class="no-highlight">233</i>&nbsp; * Для заданного ассоциативного массива знакомых через одно рукопожатие `friends`
+<i class="no-highlight">234</i>&nbsp; * необходимо построить его максимальное расширение по рукопожатиям, то есть,
+<i class="no-highlight">235</i>&nbsp; * для каждого человека найти всех людей, с которыми он знаком через любое
+<i class="no-highlight">236</i>&nbsp; * количество рукопожатий.
+<i class="no-highlight">237</i>&nbsp; *
+<i class="no-highlight">238</i>&nbsp; * Считать, что все имена людей являются уникальными, а также что рукопожатия
+<i class="no-highlight">239</i>&nbsp; * являются направленными, то есть, если Марат знает Свету, то это не означает,
+<i class="no-highlight">240</i>&nbsp; * что Света знает Марата.
+<i class="no-highlight">241</i>&nbsp; *
+<i class="no-highlight">242</i>&nbsp; * Оставлять пустой список знакомых для людей, которые их не имеют (см. EvilGnome ниже),
+<i class="no-highlight">243</i>&nbsp; * в том числе для случая, когда данного человека нет в ключах, но он есть в значениях
+<i class="no-highlight">244</i>&nbsp; * (см. GoodGnome ниже).
+<i class="no-highlight">245</i>&nbsp; *
+<i class="no-highlight">246</i>&nbsp; * Например:
+<i class="no-highlight">247</i>&nbsp; *   propagateHandshakes(
+<i class="no-highlight">248</i>&nbsp; *     mapOf(
+<i class="no-highlight">249</i>&nbsp; *       &quot;Marat&quot; to setOf(&quot;Mikhail&quot;, &quot;Sveta&quot;),
+<i class="no-highlight">250</i>&nbsp; *       &quot;Sveta&quot; to setOf(&quot;Marat&quot;),
+<i class="no-highlight">251</i>&nbsp; *       &quot;Mikhail&quot; to setOf(&quot;Sveta&quot;),
+<i class="no-highlight">252</i>&nbsp; *       &quot;Friend&quot; to setOf(&quot;GoodGnome&quot;),
+<i class="no-highlight">253</i>&nbsp; *       &quot;EvilGnome&quot; to setOf()
+<i class="no-highlight">254</i>&nbsp; *     )
+<i class="no-highlight">255</i>&nbsp; *   ) -&gt; mapOf(
+<i class="no-highlight">256</i>&nbsp; *          &quot;Marat&quot; to setOf(&quot;Mikhail&quot;, &quot;Sveta&quot;),
+<i class="no-highlight">257</i>&nbsp; *          &quot;Sveta&quot; to setOf(&quot;Marat&quot;, &quot;Mikhail&quot;),
+<i class="no-highlight">258</i>&nbsp; *          &quot;Mikhail&quot; to setOf(&quot;Sveta&quot;, &quot;Marat&quot;),
+<i class="no-highlight">259</i>&nbsp; *          &quot;Friend&quot; to setOf(&quot;GoodGnome&quot;),
+<i class="no-highlight">260</i>&nbsp; *          &quot;EvilGnome&quot; to setOf(),
+<i class="no-highlight">261</i>&nbsp; *          &quot;GoodGnome&quot; to setOf()
+<i class="no-highlight">262</i>&nbsp; *        )
+<i class="no-highlight">263</i>&nbsp; */
+<b class="nc"><i class="no-highlight">264</i>&nbsp;fun propagateHandshakes(friends: Map&lt;String, Set&lt;String&gt;&gt;): Map&lt;String, Set&lt;String&gt;&gt; = TODO()</b>
+<i class="no-highlight">265</i>&nbsp;
+<i class="no-highlight">266</i>&nbsp;/**
+<i class="no-highlight">267</i>&nbsp; * Сложная (6 баллов)
+<i class="no-highlight">268</i>&nbsp; *
+<i class="no-highlight">269</i>&nbsp; * Для заданного списка неотрицательных чисел и числа определить,
+<i class="no-highlight">270</i>&nbsp; * есть ли в списке пара чисел таких, что их сумма равна заданному числу.
+<i class="no-highlight">271</i>&nbsp; * Если да, верните их индексы в виде Pair&lt;Int, Int&gt;;
+<i class="no-highlight">272</i>&nbsp; * если нет, верните пару Pair(-1, -1).
+<i class="no-highlight">273</i>&nbsp; *
+<i class="no-highlight">274</i>&nbsp; * Индексы в результате должны следовать в порядке (меньший, больший).
+<i class="no-highlight">275</i>&nbsp; *
+<i class="no-highlight">276</i>&nbsp; * Постарайтесь сделать ваше решение как можно более эффективным,
+<i class="no-highlight">277</i>&nbsp; * используя то, что вы узнали в данном уроке.
+<i class="no-highlight">278</i>&nbsp; *
+<i class="no-highlight">279</i>&nbsp; * Например:
+<i class="no-highlight">280</i>&nbsp; *   findSumOfTwo(listOf(1, 2, 3), 4) -&gt; Pair(0, 2)
+<i class="no-highlight">281</i>&nbsp; *   findSumOfTwo(listOf(1, 2, 3), 6) -&gt; Pair(-1, -1)
+<i class="no-highlight">282</i>&nbsp; */
+<i class="no-highlight">283</i>&nbsp;fun findSumOfTwo(list: List&lt;Int&gt;, number: Int): Pair&lt;Int, Int&gt; {
+<b class="fc"><i class="no-highlight">284</i>&nbsp;    val nmap = mutableMapOf&lt;Int, Int&gt;()</b>
+<b class="fc"><i class="no-highlight">285</i>&nbsp;    for (i in list.indices) {</b>
+<b class="fc"><i class="no-highlight">286</i>&nbsp;        if (!nmap.containsKey(list[i])) nmap[list[i]] = i</b>
+<b class="fc"><i class="no-highlight">287</i>&nbsp;        else if (list[i] * 2 == number) return Pair(nmap[list[i]]!!, i)</b>
+<i class="no-highlight">288</i>&nbsp;    }
+<b class="fc"><i class="no-highlight">289</i>&nbsp;    for ((n, ind) in nmap)</b>
+<b class="fc"><i class="no-highlight">290</i>&nbsp;        if (nmap.contains(number - n) &amp;&amp; n * 2 != number) return Pair(ind, nmap[number - n]!!)</b>
+<i class="no-highlight">291</i>&nbsp;
+<b class="fc"><i class="no-highlight">292</i>&nbsp;    return Pair(-1, -1)</b>
+<i class="no-highlight">293</i>&nbsp;}
+<i class="no-highlight">294</i>&nbsp;
+<i class="no-highlight">295</i>&nbsp;/**
+<i class="no-highlight">296</i>&nbsp; * Очень сложная (8 баллов)
+<i class="no-highlight">297</i>&nbsp; *
+<i class="no-highlight">298</i>&nbsp; * Входными данными является ассоциативный массив
+<i class="no-highlight">299</i>&nbsp; * &quot;название сокровища&quot;-&quot;пара (вес сокровища, цена сокровища)&quot;
+<i class="no-highlight">300</i>&nbsp; * и вместимость вашего рюкзака.
+<i class="no-highlight">301</i>&nbsp; * Необходимо вернуть множество сокровищ с максимальной суммарной стоимостью,
+<i class="no-highlight">302</i>&nbsp; * которые вы можете унести в рюкзаке.
+<i class="no-highlight">303</i>&nbsp; *
+<i class="no-highlight">304</i>&nbsp; * Перед решением этой задачи лучше прочитать статью Википедии &quot;Динамическое программирование&quot;.
+<i class="no-highlight">305</i>&nbsp; *
+<i class="no-highlight">306</i>&nbsp; * Например:
+<i class="no-highlight">307</i>&nbsp; *   bagPacking(
+<i class="no-highlight">308</i>&nbsp; *     mapOf(&quot;Кубок&quot; to (500 to 2000), &quot;Слиток&quot; to (1000 to 5000)),
+<i class="no-highlight">309</i>&nbsp; *     850
+<i class="no-highlight">310</i>&nbsp; *   ) -&gt; setOf(&quot;Кубок&quot;)
+<i class="no-highlight">311</i>&nbsp; *   bagPacking(
+<i class="no-highlight">312</i>&nbsp; *     mapOf(&quot;Кубок&quot; to (500 to 2000), &quot;Слиток&quot; to (1000 to 5000)),
+<i class="no-highlight">313</i>&nbsp; *     450
+<i class="no-highlight">314</i>&nbsp; *   ) -&gt; emptySet()
+<i class="no-highlight">315</i>&nbsp; */
+<i class="no-highlight">316</i>&nbsp;
+<i class="no-highlight">317</i>&nbsp;
+<i class="no-highlight">318</i>&nbsp;fun bagPacking(treasures: Map&lt;String, Pair&lt;Int, Int&gt;&gt;, capacity: Int): Set&lt;String&gt; {
+<b class="nc"><i class="no-highlight">319</i>&nbsp;    val results = mutableMapOf&lt;Pair&lt;Int, Int&gt;, Int&gt;()</b>
+<b class="nc"><i class="no-highlight">320</i>&nbsp;    val weight = MutableList(treasures.size) { 0 }</b>
+<b class="nc"><i class="no-highlight">321</i>&nbsp;    val value = MutableList(treasures.size) { 0 }</b>
+<b class="nc"><i class="no-highlight">322</i>&nbsp;    val t = MutableList(treasures.size) { &quot;&quot; }</b>
+<b class="nc"><i class="no-highlight">323</i>&nbsp;    var lowWeight = capacity</b>
+<b class="nc"><i class="no-highlight">324</i>&nbsp;    val neededT = mutableMapOf&lt;Pair&lt;Int, Int&gt;, Set&lt;String&gt;&gt;()</b>
+<b class="nc"><i class="no-highlight">325</i>&nbsp;    var k = 1</b>
+<b class="nc"><i class="no-highlight">326</i>&nbsp;    for ((name, vw) in treasures) {</b>
+<b class="nc"><i class="no-highlight">327</i>&nbsp;        weight.add(k, vw.first)</b>
+<b class="nc"><i class="no-highlight">328</i>&nbsp;        value.add(k, vw.second)</b>
+<b class="nc"><i class="no-highlight">329</i>&nbsp;        t.add(k, name)</b>
+<b class="nc"><i class="no-highlight">330</i>&nbsp;        if (lowWeight &gt; vw.first) lowWeight = vw.first</b>
+<b class="nc"><i class="no-highlight">331</i>&nbsp;        k += 1</b>
+<i class="no-highlight">332</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">333</i>&nbsp;    for (j in 1..capacity) results[Pair(0, j)] = 0</b>
+<b class="nc"><i class="no-highlight">334</i>&nbsp;    for (i in 1..treasures.size) {</b>
+<b class="nc"><i class="no-highlight">335</i>&nbsp;        if (lowWeight &lt;= capacity &amp;&amp; treasures.isNotEmpty()) {</b>
+<b class="nc"><i class="no-highlight">336</i>&nbsp;            for (j in lowWeight..capacity) {</b>
+<b class="nc"><i class="no-highlight">337</i>&nbsp;                if (weight[i] &gt; j) {</b>
+<b class="nc"><i class="no-highlight">338</i>&nbsp;                    results[Pair(i, j)] = results[Pair(i - 1, j)]!!</b>
+<b class="nc"><i class="no-highlight">339</i>&nbsp;                    neededT[Pair(i, j)] = neededT[Pair(i - 1, j)] ?: setOf()</b>
+<i class="no-highlight">340</i>&nbsp;                } else {
+<b class="nc"><i class="no-highlight">341</i>&nbsp;                    if (results[Pair(i - 1, j)] == 0) {</b>
+<b class="nc"><i class="no-highlight">342</i>&nbsp;                        results[Pair(i, j)] = value[i]</b>
+<b class="nc"><i class="no-highlight">343</i>&nbsp;                        neededT[Pair(i, j)] = setOf(t[i])</b>
+<i class="no-highlight">344</i>&nbsp;                    } else {
+<b class="nc"><i class="no-highlight">345</i>&nbsp;                        if (results[Pair(i - 1, j - weight[i])] == null) {</b>
+<b class="nc"><i class="no-highlight">346</i>&nbsp;                            results[Pair(i, j)] = max(results[Pair(i - 1, j)]!!, value[i])</b>
+<b class="nc"><i class="no-highlight">347</i>&nbsp;                            if (value[i] &gt; results[Pair(i - 1, j)]!!) neededT[Pair(i, j)] = setOf(t[i])</b>
+<b class="nc"><i class="no-highlight">348</i>&nbsp;                            if (value[i] &lt;= results[Pair(i - 1, j)]!!) neededT[Pair(i, j)] = neededT[Pair(i - 1, j)]!!</b>
+<i class="no-highlight">349</i>&nbsp;                        } else {
+<b class="nc"><i class="no-highlight">350</i>&nbsp;                            results[Pair(i, j)] = max(</b>
+<b class="nc"><i class="no-highlight">351</i>&nbsp;                                results[Pair(i - 1, j)]!!, results[Pair(i - 1, j - weight[i])]!! + value[i]</b>
+<i class="no-highlight">352</i>&nbsp;                            )
+<b class="nc"><i class="no-highlight">353</i>&nbsp;                            if (results[Pair(i - 1, j - weight[i])]!! + value[i] &gt; results[Pair(i - 1, j)]!!) {</b>
+<b class="nc"><i class="no-highlight">354</i>&nbsp;                                neededT[Pair(i, j)] = neededT[Pair(i - 1, j - weight[i])]!! + t[i]</b>
+<b class="nc"><i class="no-highlight">355</i>&nbsp;                            } else neededT[Pair(i, j)] = neededT[Pair(i - 1, j)]!!</b>
+<i class="no-highlight">356</i>&nbsp;                        }
+<i class="no-highlight">357</i>&nbsp;                    }
+<i class="no-highlight">358</i>&nbsp;                }
+<i class="no-highlight">359</i>&nbsp;            }
+<i class="no-highlight">360</i>&nbsp;        }
+<i class="no-highlight">361</i>&nbsp;    }
+<b class="nc"><i class="no-highlight">362</i>&nbsp;    return if (neededT[Pair(treasures.size, capacity)] != null) neededT[Pair(treasures.size, capacity)]!!</b>
+<b class="nc"><i class="no-highlight">363</i>&nbsp;    else emptySet()</b>
+<i class="no-highlight">364</i>&nbsp;}
+<i class="no-highlight">365</i>&nbsp;
+</div>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+        var codeBlock = document.getElementById('sourceCode');
+
+        if (codeBlock) {
+            hljs.highlightBlock(codeBlock);
+        }
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2022-03-27 12:57</div>
+</div>
+</body>
+</html>
